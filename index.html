@@ -1,0 +1,2790 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<title>FluidWeb Deck</title>
+<link rel="icon" type="image/jpeg" href="FW_favicon.jpg">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #c8c8c8;
+  padding: 40px 0;
+}
+
+.slide {
+  width: 1280px;
+  height: 720px;
+  margin: 0 auto 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  background: linear-gradient(160deg, #f5f1ed 0%, #fef4ec 55%, #fdeee4 100%);
+}
+
+.slide::after {
+  content:'';
+  position:absolute;
+  top:-120px; right:-120px;
+  width:520px; height:520px;
+  background: radial-gradient(circle, rgba(249,115,22,0.10) 0%, rgba(253,186,116,0.06) 40%, transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+
+/* Logo */
+.logo {
+  position:absolute;
+  top:22px; left:40px;
+  z-index:10;
+  display:flex; align-items:center;
+}
+.logo img { height:30px; }
+
+/* Slide number */
+.snum {
+  position:absolute;
+  top:30px; right:40px;
+  font-size:13px; font-weight:700;
+  color:#c0b8b0;
+  z-index:10;
+  letter-spacing:0.05em;
+}
+
+/* Divider under header */
+.rule {
+  position:absolute;
+  top:68px; left:40px; right:40px;
+  height:1px;
+  background: linear-gradient(to right, rgba(200,188,178,0.5), transparent);
+}
+
+/* Section pill */
+.pill {
+  display:inline-block;
+  background:#f97316;
+  color:#fff;
+  font-size:11px; font-weight:700;
+  padding:4px 14px;
+  border-radius:20px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+}
+
+/* ─── SLIDE 1 — COVER logo override ─── */
+.s1-logo img { height:48px; }
+
+/* ─── SLIDE 1 — COVER ─── */
+.s1-body {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  width:85%;
+}
+.s1-headline {
+  font-size:54px; font-weight:800;
+  color:#2a2a2a; line-height:1.08;
+  text-decoration:underline;
+  text-decoration-color:#f97316;
+  text-underline-offset:10px;
+  text-decoration-thickness:3px;
+  margin-bottom:20px;
+}
+.s1-sub {
+  font-size:19px; color:#666;
+  line-height:1.6; max-width:780px;
+  margin:0 auto 28px;
+}
+.s1-badges {
+  display:flex; justify-content:center;
+  gap:24px; flex-wrap:wrap;
+}
+.s1-badge {
+  display:flex; align-items:center;
+  gap:8px; font-size:13px;
+  font-weight:600; color:#888;
+  letter-spacing:0.06em; text-transform:uppercase;
+}
+.s1-dot {
+  width:6px; height:6px;
+  border-radius:50%; background:#d0c8c0;
+}
+
+/* ─── SLIDE 2 — PROBLEM ─── */
+.s2-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:30px;
+}
+.s2-headline {
+  font-size:38px; font-weight:800;
+  color:#2a2a2a; line-height:1.15;
+  margin-bottom:18px;
+}
+.rebuild-flow {
+  display:flex; align-items:stretch;
+  background:white; border-radius:12px;
+  overflow:hidden; margin-bottom:16px;
+}
+.rebuild-step {
+  flex:1; padding:16px 18px;
+  border-right:1px solid #f0f0f0;
+}
+.rebuild-step:last-child { border-right:none; }
+.rebuild-step.warn { background:#fff8f5; }
+.rebuild-step-label {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:#bbb; margin-bottom:5px;
+}
+.rebuild-step.warn .rebuild-step-label { color:#f97316; }
+.rebuild-step-title {
+  font-size:14px; font-weight:700;
+  color:#2a2a2a; margin-bottom:4px;
+}
+.rebuild-step.warn .rebuild-step-title { color:#c05000; }
+.rebuild-step-sub {
+  font-size:12px; color:#888; line-height:1.45;
+}
+.rebuild-step.warn .rebuild-step-sub { color:#b06020; }
+.rebuild-arrow {
+  display:flex; align-items:center;
+  padding:0 6px; color:#e0d8d0;
+  font-size:18px; align-self:center; flex-shrink:0;
+}
+.stat-row { display:flex; gap:16px; }
+.stat-box {
+  flex:1; background:white;
+  border-radius:10px; padding:14px 18px;
+  border-left:3px solid #f97316;
+}
+.stat-num { font-size:30px; font-weight:800; color:#f97316; }
+.stat-label { font-size:12px; color:#777; margin-top:2px; line-height:1.4; }
+.s2-bottom {
+  position:absolute; bottom:20px; left:0; right:0;
+  font-size:19px; font-weight:800; color:#f97316; text-align:center;
+}
+
+/* ─── SLIDE 3 — WITH/WITHOUT ─── */
+.s3-content {
+  position:absolute;
+  top:80px; left:56px; right:56px; bottom:20px;
+}
+.s3-headline {
+  font-size:28px; font-weight:800;
+  color:#2a2a2a; margin-bottom:18px; line-height:1.2;
+}
+.ww-cols {
+  display:flex; gap:20px; height:510px;
+}
+.ww-col {
+  flex:1; display:flex; flex-direction:column; gap:0;
+}
+.ww-header {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 18px; border-radius:10px 10px 0 0;
+  font-size:13px; font-weight:700;
+}
+.ww-header.bad {
+  background:#f5f5f5; color:#888;
+  border:1.5px solid #e5e5e5; border-bottom:none;
+}
+.ww-header.good {
+  background:#fff4ec; color:#c05000;
+  border:1.5px solid #f97316; border-bottom:none;
+}
+.ww-header-dot {
+  width:10px; height:10px; border-radius:50%;
+}
+.ww-header.bad .ww-header-dot { background:#d0d0d0; }
+.ww-header.good .ww-header-dot { background:#f97316; }
+.ww-stack {
+  flex:1; background:white;
+  border:1.5px solid #e5e5e5; border-top:none;
+  border-radius:0 0 10px 10px;
+  display:flex; flex-direction:column;
+  padding:16px; gap:0;
+}
+.ww-col.good .ww-stack {
+  border-color:#f97316; border-top:none;
+}
+.ww-layer {
+  background:#f9f9f9; border:1px solid #eee;
+  border-radius:8px; padding:12px 16px;
+  text-align:center;
+}
+.ww-layer.app { background:#f0f0f0; }
+.ww-layer.ai { background:#f0f0f0; }
+.ww-layer.fluid-gap {
+  background:#fee2e2; border-color:#fca5a5;
+  position:relative;
+}
+.ww-layer.fluid-fw {
+  background:#fff4ec; border-color:#f97316;
+  border-width:1.5px;
+}
+.ww-layer-title {
+  font-size:13px; font-weight:700;
+  color:#2a2a2a; margin-bottom:4px;
+}
+.ww-layer.fluid-gap .ww-layer-title { color:#dc2626; }
+.ww-layer.fluid-fw .ww-layer-title { color:#c05000; }
+.ww-layer-sub {
+  font-size:11px; color:#888; line-height:1.4;
+}
+.ww-layer.fluid-gap .ww-layer-sub { color:#ef4444; }
+.ww-layer.fluid-fw .ww-layer-sub { color:#f97316; }
+.ww-arrow {
+  text-align:center; font-size:14px;
+  color:#ccc; padding:5px 0;
+}
+.ww-col.good .ww-arrow { color:#f97316; }
+.ww-xitem {
+  font-size:11px; color:#ef4444;
+  padding-left:14px; position:relative;
+  margin-top:3px;
+}
+.ww-xitem::before {
+  content:'✕'; position:absolute; left:0;
+  font-size:9px;
+}
+.ww-check {
+  font-size:11px; color:#f97316;
+  padding-left:14px; position:relative;
+  margin-top:3px;
+}
+.ww-check::before {
+  content:'✓'; position:absolute; left:0;
+  font-size:10px;
+}
+.ww-result {
+  border-radius:8px; padding:12px 16px;
+  margin-top:12px; text-align:center;
+}
+.ww-result.bad {
+  background:#fef2f2; border:1px solid #fca5a5;
+  font-size:13px; font-weight:700; color:#dc2626;
+}
+.ww-result.good {
+  background:#fff4ec; border:1px solid #f97316;
+  font-size:13px; font-weight:700; color:#c05000;
+}
+.ww-result-sub {
+  font-size:11px; margin-top:2px; font-weight:400;
+  color:#888;
+}
+.ww-result.good .ww-result-sub { color:#d97706; }
+.ww-divider {
+  display:flex; align-items:center;
+  flex-direction:column; justify-content:center;
+  padding:0 8px; gap:6px; flex-shrink:0;
+  opacity:0.5;
+}
+.ww-divider-arrow {
+  font-size:22px; color:#f97316; font-weight:700;
+}
+
+/* ─── SLIDE 4 — PLATFORM OVERVIEW ─── */
+.s4-content {
+  position:absolute;
+  top:80px; left:56px; right:56px; bottom:20px;
+}
+.s4-headline {
+  font-size:28px; font-weight:800;
+  color:#2a2a2a; margin-bottom:16px;
+}
+.s4-body {
+  display:flex; gap:16px; height:560px;
+}
+.s4-col {
+  flex:1; background:white;
+  border-radius:14px; padding:18px 20px;
+  display:flex; flex-direction:column;
+}
+.s4-col.platform-col {
+  border-top:3px solid #f97316;
+}
+.s4-col-label {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:#bbb; margin-bottom:10px;
+}
+.s4-col.platform-col .s4-col-label { color:#f97316; }
+.s4-col-title {
+  font-size:15px; font-weight:700;
+  color:#2a2a2a; margin-bottom:14px;
+  padding-bottom:10px;
+  border-bottom:1px solid #f0f0f0;
+}
+.comp-item {
+  display:flex; align-items:flex-start;
+  gap:10px; padding:8px 0;
+  border-bottom:1px solid #f8f8f8;
+}
+.comp-item:last-child { border-bottom:none; }
+.comp-item-icon {
+  font-size:18px; flex-shrink:0;
+  width:28px; text-align:center;
+}
+.comp-item-body {}
+.comp-item-name {
+  font-size:13px; font-weight:700;
+  color:#2a2a2a; margin-bottom:1px;
+}
+.comp-item-desc {
+  font-size:11px; color:#888; line-height:1.35;
+}
+.comp-item-badge {
+  display:inline-block; font-size:9px; font-weight:700;
+  padding:1px 7px; border-radius:8px;
+  background:#fff4ec; color:#f97316;
+  border:1px solid #fde0c0;
+  margin-left:6px; vertical-align:middle;
+}
+.platform-item {
+  display:flex; align-items:flex-start;
+  gap:10px; padding:8px 0;
+  border-bottom:1px solid #f8f8f8;
+}
+.platform-item:last-child { border-bottom:none; }
+.platform-icon {
+  width:28px; height:28px;
+  background:#fff4ec; border-radius:6px;
+  display:flex; align-items:center;
+  justify-content:center; flex-shrink:0;
+  font-size:14px;
+}
+.platform-icon.new {
+  background:#f97316; color:white;
+}
+.platform-item-body {}
+.platform-item-name {
+  font-size:13px; font-weight:700;
+  color:#2a2a2a; margin-bottom:1px;
+  display:flex; align-items:center; gap:6px;
+}
+.new-tag {
+  font-size:9px; font-weight:700;
+  background:#f97316; color:white;
+  padding:1px 6px; border-radius:8px;
+}
+.platform-item-desc {
+  font-size:11px; color:#888; line-height:1.35;
+}
+.s4-sdk-row {
+  display:flex; gap:10px; margin-top:14px;
+  padding-top:12px; border-top:1px solid #f0f0f0;
+  justify-content:center;
+}
+.s4-sdk-tag {
+  background:#f9f9f9; border:1px solid #e5e5e5;
+  border-radius:20px; padding:5px 14px;
+  font-size:12px; font-weight:600; color:#555;
+}
+
+/* ─── SLIDE 5 — IN ACTION: FORMS (interactive) ─── */
+.s5-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:20px;
+}
+.s5-title {
+  font-size:22px; font-weight:800;
+  color:#2a2a2a; margin-bottom:14px; margin-top:6px;
+}
+.s5-flow {
+  display:flex; gap:12px; height:520px;
+}
+.s5-panel {
+  flex:1; background:white;
+  border-radius:12px; padding:16px;
+  display:flex; flex-direction:column;
+  position:relative;
+}
+.s5-panel.highlight {
+  border:1.5px solid #f97316;
+}
+.s5-panel-label {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:#f97316; margin-bottom:6px;
+}
+.s5-panel-title {
+  font-size:14px; font-weight:700;
+  color:#2a2a2a; margin-bottom:10px;
+  padding-bottom:8px; border-bottom:1px solid #f0f0f0;
+}
+.s5-arrow {
+  display:flex; align-items:center;
+  color:#f97316; font-size:20px;
+  font-weight:700; align-self:center;
+  flex-shrink:0;
+}
+
+/* Voice command panel */
+.voice-bubble {
+  background:#f97316; color:white;
+  border-radius:12px 12px 12px 4px;
+  padding:12px 16px; font-size:13px;
+  line-height:1.4; margin-bottom:10px;
+}
+.voice-label {
+  font-size:11px; color:#aaa;
+  margin-bottom:6px;
+}
+.mic-ring {
+  width:48px; height:48px;
+  background:#f97316; border-radius:50%;
+  display:flex; align-items:center;
+  justify-content:center; color:white;
+  font-size:20px; margin:0 auto 10px;
+  box-shadow:0 0 0 8px rgba(249,115,22,0.15);
+}
+
+/* Form panel */
+.form-section-label {
+  font-size:10px; font-weight:700;
+  color:#f97316; margin-bottom:5px;
+  text-transform:uppercase; letter-spacing:0.08em;
+}
+.form-file-row {
+  background:#eff6ff; border:1.5px dashed #93c5fd;
+  border-radius:8px; padding:8px 12px;
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:8px;
+}
+.form-file-icon {
+  background:white; padding:4px; border-radius:4px;
+  font-size:14px; color:#3b82f6;
+}
+.form-file-name { font-size:11px; font-weight:600; color:#1e40af; flex:1; }
+.form-file-sub { font-size:10px; color:#60a5fa; }
+.form-field-label { font-size:10px; color:#888; margin-bottom:2px; }
+.form-field {
+  background:#f9f9f9; border:1px solid #eee;
+  border-radius:5px; padding:5px 8px;
+  font-size:11px; color:#444;
+  margin-bottom:5px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.form-field-ai {
+  background:#fff4ec; border:1px solid #fed7aa;
+  font-size:9px; font-weight:700;
+  color:#f97316; padding:1px 5px; border-radius:4px;
+  white-space:nowrap;
+}
+.form-submit-btn {
+  width:100%; background:#f97316; color:white;
+  border:none; border-radius:8px; padding:9px;
+  font-size:13px; font-weight:600;
+  cursor:pointer; margin-top:8px;
+  transition:background 0.2s;
+}
+.form-submit-btn:hover { background:#ea6c10; }
+.form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+
+/* Action review panel */
+.action-header {
+  background:#1f2937; color:white;
+  border-radius:8px; padding:12px 14px;
+  margin-bottom:10px;
+  display:flex; justify-content:space-between; align-items:flex-start;
+}
+.action-tool {
+  font-size:12px; font-weight:600; margin-bottom:2px;
+}
+.action-func {
+  font-size:10px; font-family:monospace; color:#9ca3af;
+}
+.action-pending {
+  background:#374151; color:#d1d5db;
+  font-size:9px; font-family:monospace;
+  padding:2px 6px; border-radius:3px;
+}
+.action-param-row {
+  display:flex; justify-content:space-between;
+  font-size:12px; padding:5px 0;
+  border-bottom:1px solid #f5f5f5;
+}
+.action-param-label { color:#888; }
+.action-param-val { color:#2a2a2a; font-weight:600; }
+.action-checks {
+  background:#f9f9f9; border-radius:6px;
+  padding:8px 10px; margin:8px 0;
+}
+.action-check-row {
+  display:flex; align-items:center;
+  gap:6px; font-size:11px; color:#555;
+  margin-bottom:4px;
+}
+.action-check-row:last-child { margin-bottom:0; }
+.check-green { color:#16a34a; font-size:13px; }
+.action-btns {
+  display:flex; gap:8px; margin-top:8px;
+}
+.btn-reject {
+  flex:1; background:#f5f5f5; color:#555;
+  border:none; border-radius:8px; padding:8px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  transition:background 0.2s;
+}
+.btn-reject:hover { background:#e5e5e5; }
+.btn-approve {
+  flex:1; background:#f97316; color:white;
+  border:none; border-radius:8px; padding:8px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  transition:background 0.2s;
+}
+.btn-approve:hover { background:#ea6c10; }
+.action-approved {
+  display:none;
+  background:#f0fdf4; border:1.5px solid #16a34a;
+  border-radius:8px; padding:14px;
+  text-align:center;
+  flex:1; align-items:center; justify-content:center;
+  flex-direction:column; gap:6px;
+}
+.approved-check { font-size:32px; color:#16a34a; }
+.approved-title {
+  font-size:14px; font-weight:700;
+  color:#16a34a;
+}
+.approved-sub { font-size:11px; color:#555; line-height:1.4; }
+.action-trace {
+  font-size:9px; color:#bbb; font-family:monospace;
+  text-align:center; margin-top:6px;
+}
+
+/* ─── SLIDE 6 — DATA EXPLORER (interactive) ─── */
+.s6-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:20px;
+}
+.s6-title {
+  font-size:22px; font-weight:700;
+  color:#2a2a2a; margin-bottom:14px; margin-top:6px;
+}
+.s6-body {
+  display:flex; gap:20px; height:520px;
+}
+.s6-left {
+  width:240px; flex-shrink:0;
+  display:flex; flex-direction:column;
+  gap:12px;
+}
+.s6-query-card {
+  background:white; border-radius:10px;
+  padding:14px 16px;
+}
+.s6-query-label {
+  font-size:10px; font-weight:700;
+  color:#bbb; text-transform:uppercase;
+  letter-spacing:0.1em; margin-bottom:6px;
+}
+.s6-query-text {
+  font-size:13px; color:#2a2a2a;
+  font-weight:500; line-height:1.4;
+}
+.s6-query-arrow {
+  font-size:11px; color:#f97316;
+  font-weight:700; margin-top:4px;
+}
+.s6-component-tag {
+  background:white; border-radius:10px;
+  padding:12px 16px; margin-top:auto;
+}
+.s6-comp-eyebrow {
+  font-size:10px; color:#bbb; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.1em;
+  margin-bottom:4px;
+}
+.s6-comp-name {
+  font-size:14px; font-weight:700; color:#f97316;
+}
+.s6-comp-desc {
+  font-size:11px; color:#888; margin-top:3px;
+  line-height:1.4;
+}
+
+/* Data Explorer mock */
+.s6-explorer {
+  flex:1; background:white;
+  border-radius:12px; overflow:hidden;
+  border:1.5px solid #f97316;
+  display:flex; flex-direction:column;
+}
+.de-header {
+  background:#f9f9f9; padding:10px 16px;
+  border-bottom:1px solid #eee;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.de-dataset {
+  display:flex; align-items:center; gap:8px;
+}
+.de-sparkle {
+  background:#fff4ec; padding:5px;
+  border-radius:6px; color:#f97316;
+  font-size:14px;
+}
+.de-dataset-label {
+  font-size:12px; color:#888;
+}
+.de-dataset-label strong { color:#2a2a2a; }
+.de-live {
+  background:#dcfce7; color:#16a34a;
+  font-size:10px; font-weight:700;
+  padding:3px 8px; border-radius:20px;
+  display:flex; align-items:center; gap:4px;
+}
+.de-live-dot {
+  width:6px; height:6px;
+  background:#16a34a; border-radius:50%;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; }
+  50% { opacity:0.4; }
+}
+.de-query {
+  padding:10px 16px; border-bottom:1px solid #eee;
+  display:flex; align-items:center; gap:10px;
+}
+.de-search-icon { color:#aaa; font-size:16px; }
+.de-query-text {
+  flex:1; font-size:14px; font-weight:500; color:#2a2a2a;
+}
+.de-ai-tag {
+  background:#dbeafe; color:#1d4ed8;
+  font-size:10px; font-weight:700;
+  padding:3px 8px; border-radius:5px;
+  display:flex; align-items:center; gap:4px;
+}
+.de-tabs {
+  padding:10px 16px 0;
+  display:flex; gap:6px;
+}
+.de-tab {
+  font-size:12px; font-weight:600;
+  padding:5px 14px; border-radius:8px;
+  border:none; cursor:pointer;
+  transition:all 0.18s;
+}
+.de-tab.active {
+  background:#f97316; color:white;
+}
+.de-tab:not(.active) {
+  background:#f5f5f5; color:#888;
+}
+.de-tab:not(.active):hover { background:#e8e8e8; }
+.de-viz { flex:1; padding:12px 16px 8px; overflow:hidden; }
+.de-insight {
+  background:#eff6ff; padding:10px 16px;
+  border-top:1px solid #bfdbfe;
+  display:flex; align-items:flex-start; gap:8px;
+}
+.de-insight-icon { color:#3b82f6; font-size:13px; flex-shrink:0; }
+.de-insight-text {
+  font-size:11px; color:#1d4ed8;
+  font-weight:500; line-height:1.45;
+}
+
+/* ─── SLIDE 7 — MARKET ─── */
+.market-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:24px;
+}
+.market-headline {
+  font-size:28px; font-weight:800;
+  color:#f97316; margin-bottom:20px;
+  line-height:1.2;
+}
+.market-row { display:flex; flex-direction:column; gap:14px; }
+.market-item {
+  display:flex; align-items:flex-start;
+  gap:24px; background:white;
+  border-radius:12px; padding:18px 24px;
+}
+.market-num {
+  font-size:30px; font-weight:800;
+  color:#f97316; min-width:110px; flex-shrink:0;
+  line-height:1.2;
+}
+.market-label-small {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:#bbb; margin-bottom:3px;
+}
+.market-name { font-size:16px; font-weight:700; color:#2a2a2a; margin-bottom:3px; }
+.market-sub { font-size:13px; color:#888; line-height:1.45; }
+
+/* ─── SLIDE 8 — BIZ MODEL ─── */
+.biz-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:24px;
+}
+.pricing-row { display:flex; gap:16px; margin-top:8px; }
+.pricing-card {
+  flex:1; background:white;
+  border-radius:14px; padding:24px;
+}
+.pricing-card.featured { border:2px solid #f97316; }
+.pricing-name {
+  font-size:24px; font-weight:800;
+  color:#f97316; margin-bottom:2px;
+}
+.pricing-sub-label {
+  font-size:11px; color:#aaa;
+  margin-bottom:14px; padding-bottom:12px;
+  border-bottom:1px solid #f0f0f0;
+}
+.pricing-item {
+  font-size:13px; color:#444;
+  margin-bottom:9px; padding-left:18px;
+  position:relative; line-height:1.4;
+}
+.pricing-item::before {
+  content:'✦'; position:absolute;
+  left:0; color:#f97316;
+  font-size:9px; top:3px;
+}
+.biz-footnote {
+  text-align:center; font-size:12px;
+  color:#999; margin-top:16px;
+}
+.biz-footnote strong { color:#555; }
+
+/* ─── SLIDE 9 — COMPETITION ─── */
+.comp-content {
+  position:absolute;
+  top:82px; left:50px; right:50px; bottom:50px;
+}
+.comp-three { display:flex; gap:14px; height:520px; }
+.comp-col {
+  flex:1; background:white;
+  border-radius:14px; padding:20px;
+  position:relative;
+}
+.comp-col.center-comp {
+  border:2px solid #f97316;
+  display:flex; flex-direction:column;
+  align-items:center; padding-bottom:52px;
+}
+.comp-col-label {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:#bbb; margin-bottom:5px;
+}
+.comp-col-title {
+  font-size:16px; font-weight:700;
+  color:#2a2a2a; margin-bottom:4px;
+}
+.comp-col-sub {
+  font-size:12px; color:#888;
+  font-style:italic; margin-bottom:12px;
+}
+.x-item {
+  font-size:13px; color:#666;
+  margin-bottom:7px; padding-left:18px;
+  position:relative; line-height:1.4;
+}
+.x-item::before {
+  content:'✕'; position:absolute;
+  left:0; color:#dc2626; font-size:10px; top:2px;
+}
+.comp-check {
+  font-size:13px; color:#444;
+  margin-bottom:8px; padding-left:20px;
+  position:relative; line-height:1.4;
+  width:100%;
+}
+.comp-check::before {
+  content:'✦'; position:absolute;
+  left:0; color:#f97316; font-size:9px; top:3px;
+}
+.comp-center-title {
+  font-size:18px; font-weight:800;
+  color:#2a2a2a; text-align:center;
+  margin-bottom:16px;
+}
+.comp-footer {
+  position:absolute;
+  bottom:0; left:0; right:0;
+  background:#f97316; color:white;
+  text-align:center; padding:11px;
+  border-radius:0 0 12px 12px;
+  font-size:13px; font-weight:700;
+}
+.comp-note {
+  background:#f0fdf4; border-radius:8px;
+  padding:10px 12px; font-size:12px;
+  color:#166534; margin-top:10px;
+  line-height:1.4;
+}
+.comp-bottom-quote {
+  position:absolute;
+  bottom:10px; left:50px; right:50px;
+  text-align:center; font-size:16px;
+  font-weight:700; color:#f97316;
+}
+
+/* ─── SLIDE 10 — GTM ─── */
+.gtm-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:24px;
+}
+.gtm-headline {
+  font-size:24px; font-weight:800;
+  color:#2a2a2a; margin-bottom:14px;
+}
+.gtm-headline span { color:#f97316; }
+.gtm-insight {
+  font-size:13px; color:#999; font-style:italic;
+  margin-bottom:16px; line-height:1.5;
+}
+.gtm-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1fr;
+  gap:12px;
+}
+.gtm-card {
+  background:white; border-radius:12px;
+  padding:18px 16px;
+  border-top:3px solid #f97316;
+}
+.gtm-card.teal { border-top-color:#0f766e; }
+.gtm-card-icon { font-size:26px; margin-bottom:10px; display:block; }
+.gtm-phase {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.10em; text-transform:uppercase;
+  color:#f97316; margin-bottom:5px;
+}
+.gtm-phase.teal { color:#0f766e; }
+.gtm-card-title {
+  font-size:14px; font-weight:700;
+  color:#2a2a2a; margin-bottom:6px; line-height:1.3;
+}
+.gtm-card-desc { font-size:12px; color:#777; line-height:1.55; }
+
+/* ─── SLIDE 11 — TRACTION ─── */
+.traction-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:24px;
+}
+.traction-headline {
+  font-size:28px; font-weight:800;
+  color:#2a2a2a; margin-bottom:18px;
+  line-height:1.2;
+}
+.traction-row { display:flex; gap:14px; }
+.traction-card {
+  flex:1; background:white;
+  border-radius:14px; padding:22px;
+  border-top:3px solid #f97316;
+}
+.traction-label {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:#f97316; margin-bottom:8px;
+}
+.traction-name {
+  font-size:17px; font-weight:700;
+  color:#2a2a2a; margin-bottom:8px; line-height:1.3;
+}
+.traction-desc {
+  font-size:13px; color:#777;
+  line-height:1.55;
+}
+.traction-more {
+  text-align:center; margin-top:18px;
+  font-size:14px; color:#888;
+}
+.traction-more strong { color:#444; }
+
+/* ─── SLIDE 12 — TEAM ─── */
+.team-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:24px;
+  display:flex; align-items:center;
+  justify-content:center; gap:80px;
+}
+.team-card { text-align:center; max-width:300px; }
+.team-photo {
+  width:110px; height:140px;
+  background:linear-gradient(180deg, #e8e0d8, #d8cfc6);
+  border-radius:55px; margin:0 auto 14px;
+  display:flex; align-items:center;
+  justify-content:center;
+  font-size:52px; color:#b0a898;
+}
+.team-name {
+  font-size:22px; font-weight:700;
+  color:#2a2a2a; margin-bottom:4px;
+}
+.team-role {
+  font-size:13px; font-weight:700;
+  color:#f97316; margin-bottom:12px;
+}
+.team-bio {
+  font-size:13px; color:#777;
+  line-height:1.65;
+}
+.team-tags {
+  display:flex; flex-wrap:wrap;
+  gap:6px; justify-content:center;
+  margin:10px 0;
+}
+.team-tag {
+  background:white; border:1px solid #e5e5e5;
+  border-radius:20px; padding:3px 10px;
+  font-size:11px; font-weight:600; color:#555;
+}
+.team-divider {
+  width:1px; height:200px;
+  background:linear-gradient(to bottom, transparent, #e0d8d0, transparent);
+  flex-shrink:0;
+}
+
+/* ─── SLIDE 13 — VISION ─── */
+.vision-content {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:24px;
+}
+.vision-headline {
+  font-size:28px; font-weight:800;
+  color:#2a2a2a; margin-bottom:5px;
+}
+.vision-sub {
+  font-size:15px; color:#888; margin-bottom:22px;
+  line-height:1.5;
+}
+.vision-row { display:flex; gap:20px; margin-bottom:20px; max-width:860px; }
+.vision-card {
+  flex:1; background:white;
+  border-radius:14px; padding:28px;
+  position:relative; overflow:hidden;
+}
+.vision-card.active { border:2px solid #f97316; }
+.vision-card.future { opacity:0.75; }
+.vision-stage {
+  font-size:10px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:#bbb; margin-bottom:8px;
+}
+.vision-card.active .vision-stage { color:#f97316; }
+.vision-card-icon { font-size:42px; margin-bottom:14px; }
+.vision-card-title {
+  font-size:22px; font-weight:800;
+  color:#2a2a2a; margin-bottom:10px;
+}
+.vision-card-desc {
+  font-size:14px; color:#777; line-height:1.6;
+}
+.vision-card-tag {
+  position:absolute; top:16px; right:16px;
+  background:#f97316; color:white;
+  font-size:10px; font-weight:700;
+  padding:3px 10px; border-radius:10px;
+}
+.vision-bottom {
+  text-align:center; font-size:18px;
+  font-weight:700; color:#888;
+  padding:14px; background:white;
+  border-radius:10px;
+}
+.vision-bottom span { color:#f97316; }
+
+/* ─── ADDITIONS ─── */
+
+/* Slide 1 tagline */
+.s1-tagline {
+  font-size:21px; font-weight:700; color:#f97316;
+  margin-top:34px; letter-spacing:-0.01em;
+}
+
+/* Slide 4 architecture redesign */
+.s4-arch { display:flex; gap:20px; height:565px; }
+.s4-diagram {
+  width:44%; background:#141824; border-radius:14px;
+  padding:20px 22px; display:flex; flex-direction:column; gap:10px;
+}
+.s4-diagram-title {
+  font-size:10px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.12em; color:#555;
+}
+.s4-arch-box { border-radius:10px; padding:12px 14px; }
+.s4-arch-box.your-app,.s4-arch-box.your-backend {
+  background:#1e2233; border:1px solid #2d3348;
+}
+.s4-arch-box.fw-platform {
+  border:1.5px solid rgba(249,115,22,0.55);
+  background:rgba(249,115,22,0.05); padding:14px;
+}
+.s4-arch-label {
+  font-size:10px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.1em; margin-bottom:8px;
+}
+.s4-arch-box.your-app .s4-arch-label,
+.s4-arch-box.your-backend .s4-arch-label { color:#666; }
+.s4-arch-box.fw-platform .s4-arch-label { color:#f97316; }
+.s4-chip-row { display:flex; flex-wrap:wrap; gap:5px; }
+.s4-chip {
+  font-size:10px; font-weight:600; padding:3px 9px;
+  border-radius:5px; white-space:nowrap;
+}
+.s4-chip.ui { background:#252d3d; color:#94a3b8; border:1px solid #303d54; }
+.s4-chip.runtime {
+  background:rgba(249,115,22,0.15); color:#fb923c;
+  border:1px solid rgba(249,115,22,0.25);
+}
+.s4-chip.backend { background:#252d3d; color:#94a3b8; border:1px solid #303d54; }
+.s4-arch-arrow { text-align:center; color:#3d4661; font-size:14px; line-height:1; }
+.s4-platform-inner { display:flex; flex-direction:column; gap:8px; }
+.s4-inner-label {
+  font-size:9px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.1em; color:#555; margin-bottom:4px;
+}
+.s4-inner-label.runtime-label { color:rgba(249,115,22,0.6); }
+.s4-sdk-row-dark {
+  display:flex; gap:6px; flex-wrap:wrap;
+  margin-top:auto; padding-top:10px; border-top:1px solid #1e2233;
+}
+.s4-sdk-chip-dark {
+  background:#1e2233; border:1px solid #2d3348;
+  border-radius:20px; padding:4px 10px;
+  font-size:10px; font-weight:600; color:#666;
+}
+.s4-caps { flex:1; display:flex; flex-direction:column; gap:12px; }
+.s4-cap-card {
+  flex:1; background:white; border-radius:12px;
+  padding:16px 20px; border-left:3px solid #f97316;
+}
+.s4-cap-icon { font-size:20px; margin-bottom:6px; }
+.s4-cap-title { font-size:14px; font-weight:700; color:#2a2a2a; margin-bottom:4px; }
+.s4-cap-desc { font-size:12px; color:#777; line-height:1.5; }
+
+/* Slide 5 MultiModal animation */
+.s5-progress-row { display:flex; gap:10px; margin-bottom:8px; }
+.s5-prog-item {
+  display:flex; align-items:center; gap:5px;
+  font-size:10px; color:#ccc; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.05em;
+}
+.s5-prog-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:#e5e5e5; flex-shrink:0; transition:background 0.3s;
+}
+.s5-prog-item.active .s5-prog-dot {
+  background:#f97316; box-shadow:0 0 0 3px rgba(249,115,22,0.2);
+}
+.s5-prog-item.done .s5-prog-dot { background:#f97316; }
+.s5-prog-item.active span, .s5-prog-item.done span { color:#f97316; }
+.s5-form-area {
+  flex:1; display:flex; flex-direction:column; gap:5px; margin-bottom:8px;
+}
+.s5-field-group { display:flex; flex-direction:column; gap:2px; }
+.s5-typing-text { color:#2a2a2a; font-size:11px; min-height:13px; }
+.s5-upload-row {
+  background:#eff6ff; border:1.5px dashed #93c5fd;
+  border-radius:8px; padding:7px 10px;
+  display:flex; align-items:center; gap:7px; min-height:36px;
+}
+.s5-upload-spinner {
+  width:12px; height:12px; border:2px solid #bfdbfe;
+  border-top-color:#3b82f6; border-radius:50%;
+  animation:spin 0.8s linear infinite; flex-shrink:0;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.s5-bottom-bar { margin-top:auto; }
+.s5-mic-toast {
+  background:#1f2937; color:white; border-radius:20px;
+  padding:5px 12px; font-size:11px; font-weight:600;
+  display:flex; align-items:center; gap:7px;
+  margin-bottom:6px; width:fit-content;
+  margin-left:auto; margin-right:auto;
+}
+.s5-wave-bars { display:flex; align-items:center; gap:2px; height:12px; }
+.s5-wbar {
+  width:3px; background:#f97316; border-radius:2px;
+  animation:s5wave 0.7s ease-in-out infinite alternate;
+}
+.s5-wbar:nth-child(1) { height:5px; animation-delay:0s; }
+.s5-wbar:nth-child(2) { height:9px; animation-delay:0.12s; }
+.s5-wbar:nth-child(3) { height:12px; animation-delay:0.24s; }
+.s5-wbar:nth-child(4) { height:9px; animation-delay:0.12s; }
+.s5-wbar:nth-child(5) { height:5px; animation-delay:0s; }
+@keyframes s5wave {
+  from { transform:scaleY(0.4); opacity:0.6; }
+  to { transform:scaleY(1.0); opacity:1; }
+}
+.s5-input-bar {
+  display:flex; align-items:center; background:white;
+  border-radius:28px; padding:5px 7px; gap:5px; border:1px solid #e5e5e5;
+}
+.s5-mic-btn {
+  width:34px; height:34px; background:#1f2937; border:none;
+  border-radius:50%; cursor:default; font-size:14px;
+  transition:background 0.3s, box-shadow 0.3s; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.s5-mic-btn.recording {
+  background:#f97316; animation:micPulse 1.2s ease-in-out infinite;
+}
+@keyframes micPulse {
+  0%,100% { box-shadow:0 0 0 4px rgba(249,115,22,0.25); }
+  50% { box-shadow:0 0 0 8px rgba(249,115,22,0.15), 0 0 0 14px rgba(249,115,22,0.06); }
+}
+.s5-input-spacer { flex:1; }
+.s5-upload-btn {
+  width:30px; height:30px; background:#f5f5f5; border:none;
+  border-radius:50%; font-size:13px; cursor:default; color:#888;
+  display:flex; align-items:center; justify-content:center;
+}
+.s5-cam-btn {
+  width:30px; height:30px; background:#1f2937; border:none;
+  border-radius:50%; cursor:default; color:white;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* Slide 6 clickable queries */
+.s6-query-clickable {
+  cursor:pointer; transition:background 0.15s, box-shadow 0.15s, border-color 0.15s;
+  border:1.5px solid transparent;
+}
+.s6-query-clickable:hover { background:#fff4ec; box-shadow:0 2px 8px rgba(249,115,22,0.12); }
+.s6-query-clickable.s6-active { border-color:#f97316; background:#fff7ed; }
+
+/* Slide 8 bottom */
+.biz-bottom-row { display:flex; gap:12px; margin-top:14px; }
+.biz-bottom-item {
+  flex:1; background:white; border-radius:10px;
+  padding:12px 16px; border-top:2px solid #f0f0f0;
+  display:flex; align-items:flex-start; gap:10px;
+}
+.biz-bottom-item.orange { border-top-color:#f97316; }
+.biz-bottom-icon { font-size:18px; flex-shrink:0; }
+.biz-bottom-title { font-size:12px; font-weight:700; color:#2a2a2a; margin-bottom:2px; }
+.biz-bottom-sub { font-size:11px; color:#888; line-height:1.4; }
+
+/* Slide 9 comparison matrix */
+.comp-matrix {
+  margin-top:12px; background:white; border-radius:10px;
+  overflow:hidden;
+}
+.comp-matrix-row {
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
+  padding:7px 14px; border-bottom:1px solid #f5f5f5;
+  align-items:center;
+}
+.comp-matrix-row:last-child { border-bottom:none; }
+.comp-matrix-row.header { background:#f9f9f9; }
+.comp-matrix-head { font-size:10px; font-weight:700; color:#bbb; text-transform:uppercase; letter-spacing:0.08em; }
+.comp-matrix-head.center { color:#f97316; text-align:center; }
+.comp-matrix-label { font-size:12px; color:#555; font-weight:500; }
+.comp-matrix-val { text-align:center; font-size:13px; font-weight:700; }
+.comp-matrix-val.yes { color:#16a34a; }
+.comp-matrix-val.no { color:#dc2626; }
+.comp-matrix-val.partial { color:#d97706; font-size:11px; }
+
+/* Slide 10 bottom */
+.gtm-bottom {
+  margin-top:12px; background:white; border-radius:10px;
+  padding:14px 20px; display:flex; align-items:center;
+  gap:0; flex-wrap:wrap;
+}
+.gtm-funnel-step {
+  display:flex; align-items:center; gap:6px;
+  font-size:12px; color:#555; font-weight:600; padding:0 4px;
+}
+.gtm-funnel-dot { width:7px; height:7px; background:#f97316; border-radius:50%; flex-shrink:0; }
+.gtm-funnel-arrow { color:#ddd; font-size:14px; padding:0 2px; }
+.gtm-why-now {
+  margin-left:auto; font-size:12px; color:#f97316;
+  font-weight:700; white-space:nowrap; padding-left:16px;
+  border-left:1px solid #f0f0f0;
+}
+
+/* Team photo real images */
+.team-photo { overflow:hidden; background:linear-gradient(180deg,#e8e0d8,#d8cfc6); width:130px!important; height:130px!important; border-radius:65px!important; }
+.team-photo img { width:100%; height:100%; object-fit:cover; object-position:center top; }
+
+/* Traction card v2 */
+.traction-card-v2 {
+  flex:1; background:white; border-radius:14px;
+  padding:20px 20px 18px; display:flex; flex-direction:column;
+  border-top:3px solid #f97316;
+}
+.traction-v2-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+.traction-v2-icon { font-size:28px; }
+.traction-v2-status {
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:10px; font-weight:700; padding:3px 8px; border-radius:10px;
+}
+.traction-v2-status.partner { background:#dbeafe; color:#1d4ed8; }
+.traction-v2-status.live { background:#dcfce7; color:#16a34a; }
+.traction-v2-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:#bbb; margin-bottom:4px; }
+.traction-v2-metric { font-size:24px; font-weight:800; color:#2a2a2a; line-height:1.1; margin-bottom:10px; }
+.traction-v2-problem { font-size:12px; color:#888; line-height:1.55; margin-bottom:8px; flex:1; }
+.traction-v2-usecase { font-size:12px; font-weight:600; color:#2a2a2a; padding:8px 0 0; border-top:1px solid #f0f0f0; display:flex; align-items:flex-start; gap:6px; }
+.traction-v2-usecase::before { content:'→'; color:#f97316; flex-shrink:0; }
+.traction-more-v2 { text-align:center; margin-top:16px; font-size:13px; color:#888; background:white; border-radius:10px; padding:10px 20px; }
+.traction-more-v2 strong { color:#444; }
+
+/* ── In Action tab bar ── */
+.ia-tabbar {
+  position:absolute; top:62px; left:0; right:0;
+  height:58px; background:white;
+  border-bottom:2px solid #ede8e3;
+  display:flex; align-items:center;
+  padding:0 28px; gap:10px; z-index:10;
+}
+
+.ia-tab {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 20px; border-radius:8px; cursor:pointer;
+  border:2px solid #f0ebe5; transition:all 0.18s;
+  background:white;
+}
+.ia-tab:hover { border-color:#f97316; background:#fff8f4; }
+.ia-tab.ia-active { border-color:#f97316; background:#f97316; }
+.ia-tab-icon { font-size:18px; flex-shrink:0; }
+.ia-tab-name { font-size:13px; font-weight:700; color:#555; line-height:1.2; }
+.ia-tab-sub { font-size:10px; color:#bbb; margin-top:2px; }
+.ia-tab.ia-active .ia-tab-name { color:white; }
+.ia-tab.ia-active .ia-tab-sub { color:rgba(255,255,255,0.75); }
+
+/* ── Business Model market strip ── */
+.biz-market-strip {
+  display:flex; align-items:center; margin-bottom:12px;
+  background:white; border-radius:8px; padding:9px 20px; gap:0;
+}
+.biz-mkt-item { flex:1; display:flex; align-items:center; gap:10px; }
+.biz-mkt-num { font-size:22px; font-weight:800; color:#f97316; }
+.biz-mkt-text { font-size:10px; color:#888; line-height:1.35; }
+.biz-mkt-text strong { display:block; font-size:10.5px; color:#555; }
+.biz-mkt-divider { width:1px; height:32px; background:#ede8e3; margin:0 16px; }
+
+/* ─── SLIDE 10 V3 — GTM (visual/interactive) ─── */
+.s10v3 {
+  position:absolute;
+  top:82px; left:56px; right:56px; bottom:20px;
+  display:flex; flex-direction:column; gap:9px;
+}
+.s10v3-headline { font-size:19px; font-weight:700; color:#2a2a2a; margin-top:3px; line-height:1.25; }
+.s10v3-headline span { color:#f97316; }
+.s10v3-sub { font-size:11.5px; color:#999; }
+
+/* ── 4 Strategy pillars ── */
+.s10v3-pillars { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; flex-shrink:0; }
+.s10v3-pillar {
+  background:white; border-radius:10px; padding:11px 12px;
+  display:flex; flex-direction:column; gap:5px;
+  border-top:3px solid #f0ebe5;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.s10v3-pillar.featured { border-top-color:#f97316; }
+.s10v3-pillar-top { display:flex; align-items:center; gap:7px; }
+.s10v3-pillar-num {
+  width:20px; height:20px; border-radius:50%; background:#f5f1ed;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:800; color:#bbb; flex-shrink:0;
+}
+.s10v3-pillar.featured .s10v3-pillar-num { background:#fff4ec; color:#f97316; }
+.s10v3-pillar-phase { font-size:9px; font-weight:700; color:#ccc; text-transform:uppercase; letter-spacing:0.08em; }
+.s10v3-pillar.featured .s10v3-pillar-phase { color:#fb923c; }
+.s10v3-pillar-title { font-size:12.5px; font-weight:700; color:#2a2a2a; line-height:1.3; }
+.s10v3-pillar-desc { font-size:10.5px; color:#888; line-height:1.45; }
+.s10v3-pillar-meta { display:flex; flex-wrap:wrap; gap:4px; margin-top:1px; }
+.s10v3-pillar-tag {
+  font-size:9px; color:#bbb; font-weight:600; padding:2px 6px;
+  background:#f9f7f5; border-radius:20px; border:1px solid #ede8e3;
+}
+.s10v3-pillar.featured .s10v3-pillar-tag { color:#ea580c; background:#fff4ec; border-color:#fed7aa; }
+.s10v3-pillar-cue {
+  margin-top:auto; font-size:9px; color:#f97316; font-weight:700;
+  display:flex; align-items:center; gap:3px; padding-top:4px;
+  border-top:1px solid #fff4ec;
+}
+
+/* ── "Live demos" divider ── */
+.s10v3-divider {
+  display:flex; align-items:center; gap:10px; flex-shrink:0;
+}
+.s10v3-divider-line { flex:1; height:1px; background:#ede8e3; }
+.s10v3-divider-label {
+  font-size:9.5px; font-weight:700; color:#bbb;
+  text-transform:uppercase; letter-spacing:0.1em; white-space:nowrap;
+}
+
+/* ── Two live demo panels ── */
+.s10v3-panels { display:grid; grid-template-columns:1fr 1fr; gap:12px; flex:1; min-height:0; }
+
+/* Claude Code panel */
+.s10v3-cc {
+  background:#16213e; border-radius:12px; overflow:hidden;
+  display:flex; flex-direction:column; border:1.5px solid #2d3a5e;
+}
+.s10v3-cc-bar {
+  background:#0f1729; padding:7px 12px;
+  display:flex; align-items:center; gap:5px;
+  border-bottom:1px solid #2d3a5e; flex-shrink:0;
+}
+.s10v3-cc-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.s10v3-cc-title { font-size:10px; color:#6b7db3; font-weight:600; letter-spacing:0.04em; margin-left:4px; }
+.s10v3-cc-badge { margin-left:auto; background:#f97316; color:white; font-size:9px; font-weight:700; padding:2px 8px; border-radius:20px; }
+.s10v3-cc-scenario {
+  background:#0d1526; padding:7px 12px; border-bottom:1px solid #2d3a5e;
+  font-size:10px; color:#4a5a80; font-style:italic; flex-shrink:0;
+  display:flex; align-items:center; gap:5px;
+}
+.s10v3-cc-scenario b { color:#6b7db3; font-style:normal; }
+.s10v3-cc-body { flex:1; padding:11px; display:flex; flex-direction:column; gap:8px; overflow:hidden; min-height:0; }
+.s10v3-user-msg { background:#1e2d50; border-radius:8px 8px 2px 8px; padding:8px 11px; align-self:flex-end; max-width:90%; }
+.s10v3-user-label { font-size:9px; color:#6b7db3; margin-bottom:3px; font-weight:600; }
+.s10v3-user-text { font-size:12px; color:#c8d6f8; line-height:1.4; }
+.s10v3-ai-msg { background:#1a2844; border-radius:8px 8px 8px 2px; padding:9px 12px; max-width:96%; border-left:2px solid #f97316; }
+.s10v3-ai-label { font-size:9px; color:#f97316; margin-bottom:4px; font-weight:700; display:flex; align-items:center; gap:4px; }
+.s10v3-ai-text { font-size:11px; color:#8ca8d8; line-height:1.4; margin-bottom:7px; }
+.s10v3-code {
+  background:#0d1526; border-radius:6px; padding:7px 10px;
+  font-family:'Courier New', monospace; font-size:10px;
+  line-height:1.65; color:#a8c2e8; border:1px solid #2d3a5e;
+  white-space:pre; min-height:18px;
+}
+.s10v3-code .kw { color:#f97316; }
+.s10v3-code .fn { color:#7dd3c0; }
+.s10v3-code .str { color:#86efac; }
+.s10v3-code .cm { color:#4a5a80; font-style:italic; }
+.s10v3-success {
+  display:inline-flex; align-items:center; gap:5px;
+  background:#16a34a22; border:1px solid #16a34a44;
+  color:#4ade80; font-size:10px; font-weight:700;
+  padding:4px 10px; border-radius:20px; align-self:flex-start;
+  opacity:0; transition:opacity 0.5s;
+}
+.s10v3-success.show { opacity:1; }
+.s10v3-cc-footer {
+  padding:6px 12px; background:#0f1729; border-top:1px solid #2d3a5e;
+  font-size:10px; color:#4a5a80; display:flex; align-items:center; gap:5px; flex-shrink:0;
+}
+.s10v3-cc-footer span { color:#f97316; font-weight:700; }
+
+/* Bolt.new panel */
+.s10v3-bolt {
+  background:#fafaf8; border-radius:12px; overflow:hidden;
+  display:flex; flex-direction:column; border:1.5px solid #e8e0d8;
+}
+.s10v3-bolt-bar {
+  background:#f5f1ed; padding:7px 12px;
+  display:flex; align-items:center; gap:6px;
+  border-bottom:1px solid #e8e0d8; flex-shrink:0;
+}
+.s10v3-bolt-logo { font-size:13px; font-weight:800; color:#2a2a2a; letter-spacing:-0.02em; }
+.s10v3-bolt-logo span { color:#f97316; }
+.s10v3-bolt-search { flex:1; background:white; border:1px solid #e0d8d0; border-radius:6px; padding:4px 10px; font-size:10px; color:#bbb; }
+.s10v3-bolt-tag { background:#f97316; color:white; font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px; }
+.s10v3-bolt-scenario {
+  background:#fdf8f4; padding:7px 12px; border-bottom:1px solid #ede8e3;
+  font-size:10px; color:#bbb; font-style:italic; flex-shrink:0;
+  display:flex; align-items:center; gap:5px;
+}
+.s10v3-bolt-scenario b { color:#999; font-style:normal; }
+.s10v3-bolt-body { flex:1; padding:10px 12px; display:flex; flex-direction:column; gap:7px; min-height:0; overflow:hidden; }
+.s10v3-bolt-section-label { font-size:9px; font-weight:700; color:#ccc; text-transform:uppercase; letter-spacing:0.1em; flex-shrink:0; }
+.s10v3-tpl-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; flex-shrink:0; }
+.s10v3-tpl {
+  background:white; border-radius:8px; padding:8px 10px; cursor:pointer;
+  border:1.5px solid #f0ebe5; transition:all 0.18s;
+  display:flex; gap:8px; align-items:flex-start;
+}
+.s10v3-tpl:hover { border-color:#f97316; box-shadow:0 2px 8px rgba(249,115,22,0.1); }
+.s10v3-tpl.active { border-color:#f97316; background:#fff7ed; }
+.s10v3-tpl-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+.s10v3-tpl-info {}
+.s10v3-tpl-name { font-size:11px; font-weight:700; color:#2a2a2a; margin-bottom:2px; }
+.s10v3-tpl-desc { font-size:10px; color:#aaa; line-height:1.3; }
+.s10v3-tpl-detail {
+  background:white; border-radius:8px; padding:10px 12px;
+  border:1.5px solid #f97316; display:none; flex-direction:column; gap:6px; flex-shrink:0;
+}
+.s10v3-tpl-detail.show { display:flex; }
+.s10v3-tpl-detail-title { font-size:11px; font-weight:700; color:#f97316; }
+.s10v3-tpl-chips { display:flex; flex-wrap:wrap; gap:4px; }
+.s10v3-tpl-chip { background:#fff4ec; color:#c2540a; font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px; border:1px solid #fed7aa; }
+.s10v3-tpl-cta {
+  display:inline-flex; align-items:center; gap:5px;
+  background:#f97316; color:white; font-size:10px; font-weight:700;
+  padding:5px 12px; border-radius:6px; cursor:pointer; align-self:flex-start;
+  border:none; transition:background 0.15s;
+}
+.s10v3-tpl-cta:hover { background:#ea6f0f; }
+
+/* Timeline */
+.s10v3-timeline {
+  background:white; border-radius:10px; padding:8px 20px;
+  display:flex; align-items:center; gap:0; flex-shrink:0;
+}
+.s10v3-tl-step { display:flex; align-items:center; gap:6px; flex:1; white-space:nowrap; }
+.s10v3-tl-dot { width:8px; height:8px; border-radius:50%; background:#f0ebe5; border:2px solid #e0d8d0; flex-shrink:0; }
+.s10v3-tl-step.lit .s10v3-tl-dot { background:#f97316; border-color:#f97316; }
+.s10v3-tl-label { font-size:10.5px; font-weight:700; color:#bbb; }
+.s10v3-tl-step.lit .s10v3-tl-label { color:#f97316; }
+.s10v3-tl-sublabel { font-size:9px; color:#ccc; font-weight:400; margin-top:1px; }
+.s10v3-tl-step.lit .s10v3-tl-sublabel { color:#fb923c; }
+.s10v3-tl-line { flex:1; height:1px; background:#e8e0d8; margin:0 6px; max-width:44px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SLIDE 1 — COVER ══════════════ -->
+<div class="slide">
+  <div class="logo s1-logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">01 ▪▪▪</div>
+  <div class="s1-body">
+    <div class="s1-headline">The React of the AI-native era.</div>
+    <div class="s1-sub">Drop-in components that let users complete work with voice, chat, and files — safely, inside your product.</div>
+    <div class="s1-tagline">Production-ready Agentic Interfaces.</div>
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 2 — PROBLEM ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">02 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="s2-content">
+    <div class="s2-headline">Teams are shipping AI.<br>It stops at the chatbot.</div>
+    <div class="rebuild-flow">
+      <div class="rebuild-step">
+        <div class="rebuild-step-label">Months 1–6</div>
+        <div class="rebuild-step-title">AI backend built</div>
+        <div class="rebuild-step-sub">Model selected, orchestration wired, evals passing. Solid engineering. The backend works.</div>
+      </div>
+      <div class="rebuild-arrow">→</div>
+      <div class="rebuild-step warn">
+        <div class="rebuild-step-label">Last 6–8 weeks</div>
+        <div class="rebuild-step-title">Interface layer: scramble</div>
+        <div class="rebuild-step-sub">A chat overlay gets bolted on before launch. Anything deeper — forms, workflows, navigation — gets cut. Every team. Every sprint.</div>
+      </div>
+      <div class="rebuild-arrow">→</div>
+      <div class="rebuild-step">
+        <div class="rebuild-step-label">Post-launch</div>
+        <div class="rebuild-step-title">Chatbot shipped. Ceiling hit.</div>
+        <div class="rebuild-step-sub">Users use it for Q&amp;A. Any deeper action — forms, workflows, navigation — requires rebuilding the interface layer from scratch.</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">95%</div>
+        <div class="stat-label">of enterprise AI pilots fail to show measurable returns <span style="color:#bbb">(MIT)</span></div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">55%</div>
+        <div class="stat-label">of workers rarely or never use AI at work — two years after the wave hit <span style="color:#bbb">(NN Group)</span></div>
+      </div>
+      <div class="stat-box" style="border-left-color:#2a2a2a;">
+        <div class="stat-label" style="font-size:13px; color:#444; line-height:1.5; font-style:italic;">"Building and maintaining our own agent framework has proven costly and restrictive. It directly limits our ability to deliver AI value to customers."</div>
+        <div class="stat-label" style="margin-top:8px; color:#bbb; font-size:11px;">— Series D HR &amp; Payroll SaaS</div>
+      </div>
+    </div>
+    <div class="s2-bottom">The AI backend is solved. The interface layer isn't.</div>
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 3 — WITH / WITHOUT ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">03 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="s3-content">
+    <div class="s3-headline">What changes when you add FluidWeb</div>
+    <div class="ww-cols">
+
+      <!-- WITHOUT column -->
+      <div class="ww-col">
+        <div class="ww-header bad">
+          <div class="ww-header-dot"></div>
+          Without FluidWeb
+        </div>
+        <div class="ww-stack">
+          <div class="ww-layer app">
+            <div class="ww-layer-title">Your Frontend</div>
+            <div class="ww-layer-sub">Business logic, users, workflows</div>
+          </div>
+          <div class="ww-arrow">↓</div>
+          <div class="ww-layer fluid-gap">
+            <div class="ww-layer-title">AI Chat overlay (floating beside app)</div>
+            <div class="ww-xitem">Can't read screen state</div>
+            <div class="ww-xitem">Can't fill forms or take actions</div>
+            <div class="ww-xitem">6–8 weeks to build anything better</div>
+          </div>
+          <div class="ww-arrow">↓</div>
+          <div class="ww-layer ai">
+            <div class="ww-layer-title">AI Backend</div>
+            <div class="ww-layer-sub">Disconnected from your UI</div>
+          </div>
+          <div class="ww-result bad">
+            Chatbot works. Agentic doesn't.
+            <div class="ww-result-sub">Scaling beyond Q&amp;A breaks the roadmap.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="ww-divider">
+        <div class="ww-divider-arrow">→</div>
+        <div class="ww-divider-arrow">→</div>
+        <div class="ww-divider-arrow">→</div>
+      </div>
+
+      <!-- WITH column -->
+      <div class="ww-col good">
+        <div class="ww-header good">
+          <div class="ww-header-dot"></div>
+          With FluidWeb
+        </div>
+        <div class="ww-stack">
+          <!-- Your Frontend with FluidWeb embedded inside -->
+          <div class="ww-layer app" style="padding:0; overflow:visible;">
+            <div style="padding:10px 14px 8px; border-bottom:1px solid #eee;">
+              <div class="ww-layer-title">Your Frontend</div>
+              <div class="ww-layer-sub">Same app — same tech stack</div>
+            </div>
+            <div style="margin:8px 10px 10px; background:#fff4ec; border:1.5px solid rgba(249,115,22,0.6); border-radius:8px; padding:10px 12px;">
+              <div style="font-size:9px; font-weight:800; color:#f97316; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:7px;">⚡ FluidWeb — lives inside your UI, not beside it</div>
+              <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                <span style="background:white; border:1px solid #fddcb0; border-radius:5px; padding:3px 9px; font-size:10px; font-weight:600; color:#c05000;">🎙️ Voice</span>
+                <span style="background:white; border:1px solid #fddcb0; border-radius:5px; padding:3px 9px; font-size:10px; font-weight:600; color:#c05000;">💬 Chat</span>
+                <span style="background:white; border:1px solid #fddcb0; border-radius:5px; padding:3px 9px; font-size:10px; font-weight:600; color:#c05000;">📋 Forms</span>
+                <span style="background:white; border:1px solid #fddcb0; border-radius:5px; padding:3px 9px; font-size:10px; font-weight:600; color:#c05000;">📊 Explorer</span>
+                <span style="background:white; border:1px solid #fddcb0; border-radius:5px; padding:3px 9px; font-size:10px; font-weight:600; color:#c05000;">🧭 Nav</span>
+              </div>
+            </div>
+          </div>
+          <div class="ww-arrow" style="color:#f97316;">↓</div>
+          <div class="ww-layer ai">
+            <div class="ww-layer-title">AI Backend</div>
+            <div class="ww-layer-sub">Same stack. Now connected to the UI.</div>
+          </div>
+          <div class="ww-layer fluid-fw" style="margin-top:6px;">
+            <div class="ww-check">AI fills forms, navigates, runs workflows</div>
+            <div class="ww-check">Policy + approvals live inside the component</div>
+            <div class="ww-check">Ships as a React component — not middleware</div>
+          </div>
+          <div class="ww-result good">
+            AI completes work. Adoption follows.
+            <div class="ww-result-sub">Users trust it. Teams ship faster.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ [SLIDE 4 REMOVED — components now shown in slide 3] ══════════════ -->
+<div class="slide" style="display:none;">
+  <div class="s4-content">
+    <div class="s4-body">
+
+      <!-- Left: UI Components -->
+      <div class="s4-col">
+        <div class="s4-col-label">UI Components</div>
+        <div class="s4-col-title">Drop-in agentic surfaces for your app</div>
+        <div class="comp-item">
+          <div class="comp-item-icon">💬</div>
+          <div class="comp-item-body">
+            <div class="comp-item-name">Chat Actions</div>
+            <div class="comp-item-desc">AI runs tools within bounds you define</div>
+          </div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-item-icon">🎙️</div>
+          <div class="comp-item-body">
+            <div class="comp-item-name">Voice Commands</div>
+            <div class="comp-item-desc">Speech → structured in-app actions</div>
+          </div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-item-icon">📋</div>
+          <div class="comp-item-body">
+            <div class="comp-item-name">Fluid Forms</div>
+            <div class="comp-item-desc">Voice, chat, or files → validated data</div>
+          </div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-item-icon">🧭</div>
+          <div class="comp-item-body">
+            <div class="comp-item-name">Navigation</div>
+            <div class="comp-item-desc">Describe a goal — AI takes you there</div>
+          </div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-item-icon">📊</div>
+          <div class="comp-item-body">
+            <div class="comp-item-name">Data Explorer</div>
+            <div class="comp-item-desc">Natural language → charts, tables, insights</div>
+          </div>
+        </div>
+        <div class="comp-item">
+          <div class="comp-item-icon">⌨️</div>
+          <div class="comp-item-body">
+            <div class="comp-item-name">Custom Components</div>
+            <div class="comp-item-desc">Build agentic UI on the same runtime</div>
+          </div>
+        </div>
+        <div class="s4-sdk-row">
+          <div class="s4-sdk-tag">⚙ React SDK</div>
+          <div class="s4-sdk-tag">&lt;/&gt; TypeScript</div>
+          <div class="s4-sdk-tag">⚡ Zero Config</div>
+        </div>
+      </div>
+
+      <!-- Right: Platform Capabilities -->
+      <div class="s4-col platform-col">
+        <div class="s4-col-label">Platform</div>
+        <div class="s4-col-title">What runs under every component</div>
+        <div class="platform-item">
+          <div class="platform-icon">📈</div>
+          <div class="platform-item-body">
+            <div class="platform-item-name">Usage Analytics</div>
+            <div class="platform-item-desc">Per-component adoption metrics and AI interaction data</div>
+          </div>
+        </div>
+        <div class="platform-item">
+          <div class="platform-icon">🎛️</div>
+          <div class="platform-item-body">
+            <div class="platform-item-name">Component Fine Tuning</div>
+            <div class="platform-item-desc">Tune behavior per context — no code changes</div>
+          </div>
+        </div>
+        <div class="platform-item">
+          <div class="platform-icon">🤖</div>
+          <div class="platform-item-body">
+            <div class="platform-item-name">Agent Config Management</div>
+            <div class="platform-item-desc">Version and deploy configs without redeploying</div>
+          </div>
+        </div>
+        <div class="platform-item">
+          <div class="platform-icon">🛡️</div>
+          <div class="platform-item-body">
+            <div class="platform-item-name">Policy Engine &amp; Approvals</div>
+            <div class="platform-item-desc">RBAC, approval gates, budget limits at platform level</div>
+          </div>
+        </div>
+        <div class="platform-item">
+          <div class="platform-icon">🔍</div>
+          <div class="platform-item-body">
+            <div class="platform-item-name">Audit Logs &amp; Replay</div>
+            <div class="platform-item-desc">Trace every action — reproduce for compliance or debug</div>
+          </div>
+        </div>
+        <div class="platform-item">
+          <div class="platform-icon">⚡</div>
+          <div class="platform-item-body">
+            <div class="platform-item-name">Orchestration Runtime</div>
+            <div class="platform-item-desc">Multi-step workflows, retries, safe degrade built in</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 4 — IN ACTION (tabbed) ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">04 ▪▪▪</div>
+  <div class="rule"></div>
+
+  <!-- Tab bar -->
+  <div class="ia-tabbar">
+    <div class="pill" style="margin-right:4px;">In Action</div>
+    <div class="ia-tab ia-active" onclick="iaSwitch('form',this)">
+      <span class="ia-tab-icon">📋</span>
+      <div>
+        <div class="ia-tab-name">FluidForm</div>
+        <div class="ia-tab-sub">Voice → Form fill → Action approval</div>
+      </div>
+    </div>
+    <div class="ia-tab" onclick="iaSwitch('data',this)">
+      <span class="ia-tab-icon">📊</span>
+      <div>
+        <div class="ia-tab-name">FluidDataExplorer</div>
+        <div class="ia-tab-sub">Natural language → Charts, tables, insights</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forms panel (default visible) -->
+  <div class="s5-content" id="ia-form-panel" style="top:130px;">
+    <div class="s5-flow" style="height:100%">
+
+      <!-- Panel 1: Voice input -->
+      <div class="s5-panel">
+        <div class="s5-panel-label">Component</div>
+        <div class="s5-panel-title">Fluid Voice Command</div>
+        <div style="display:flex;align-items:center;gap:12px;margin:8px auto 12px;justify-content:center;">
+          <div class="mic-ring" style="flex-shrink:0;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <div style="text-align:left;">
+            <div style="font-size:13px;font-weight:700;color:#1f2937;">Voice Input</div>
+            <div style="font-size:11px;color:#9ca3af;">Listening...</div>
+          </div>
+        </div>
+        <div class="voice-label">User says:</div>
+        <div class="voice-bubble">"Create a new vendor called GlobalTech in the manufacturing category"</div>
+        <div style="font-size:11px; color:#aaa; margin-top:8px; line-height:1.4;">FluidWeb parses intent, identifies the action (<code style="font-size:10px; background:#f0f0f0; padding:1px 4px; border-radius:3px;">create_vendor</code>), and routes to the form component.</div>
+      </div>
+
+      <div class="s5-arrow">→</div>
+
+      <!-- Panel 2: Animated Fluid Form (MultiModal) -->
+      <div class="s5-panel highlight" style="display:flex;flex-direction:column;">
+        <div class="s5-panel-label">Component</div>
+        <div class="s5-panel-title">Fluid Form — Vendor Onboarding</div>
+
+        <!-- Progress dots -->
+        <div class="s5-progress-row">
+          <div class="s5-prog-item" id="s5p1"><div class="s5-prog-dot"></div><span>Company</span></div>
+          <div class="s5-prog-item" id="s5p2"><div class="s5-prog-dot"></div><span>Category</span></div>
+          <div class="s5-prog-item" id="s5p3"><div class="s5-prog-dot"></div><span>Vendor Profile</span></div>
+        </div>
+
+        <!-- Form fields -->
+        <div class="s5-form-area">
+          <div class="s5-field-group">
+            <div class="form-field-label">Company Name</div>
+            <div class="form-field" style="min-height:26px;">
+              <span id="s5-field-company" class="s5-typing-text"></span>
+              <div class="form-field-ai" id="s5-ai-tag1" style="display:none;">✦ AI</div>
+            </div>
+          </div>
+          <div class="s5-field-group">
+            <div class="form-field-label">Category</div>
+            <div class="form-field" style="min-height:26px;">
+              <span id="s5-field-category" class="s5-typing-text"></span>
+              <div class="form-field-ai" id="s5-ai-tag2" style="display:none;">✦ AI</div>
+            </div>
+          </div>
+          <!-- Extracted fields (shown after PDF upload) -->
+          <div id="s5-extracted-fields" style="display:none;">
+            <div class="s5-field-group">
+              <div class="form-field-label">Tax ID</div>
+              <div class="form-field" style="min-height:22px;">
+                <span id="s5-field-taxid" class="s5-typing-text"></span>
+                <div class="form-field-ai" id="s5-ai-tag3" style="display:none;">✦ AI</div>
+              </div>
+            </div>
+            <div class="s5-field-group">
+              <div class="form-field-label">Business Address</div>
+              <div class="form-field" style="min-height:22px;">
+                <span id="s5-field-address" class="s5-typing-text"></span>
+                <div class="form-field-ai" id="s5-ai-tag4" style="display:none;">✦ AI</div>
+              </div>
+            </div>
+            <div class="s5-field-group">
+              <div class="form-field-label">Payment Terms</div>
+              <div class="form-field" style="min-height:22px;">
+                <span id="s5-field-terms" class="s5-typing-text"></span>
+                <div class="form-field-ai" id="s5-ai-tag5" style="display:none;">✦ AI</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- File upload row -->
+          <div class="s5-upload-row">
+            <div id="s5-upload-idle" style="display:flex;align-items:center;gap:6px;width:100%;">
+              <span style="font-size:13px;">📎</span>
+              <span style="color:#aaa;font-size:11px;">Vendor Profile</span>
+            </div>
+            <div id="s5-upload-progress" style="display:none;align-items:center;gap:7px;">
+              <div class="s5-upload-spinner"></div>
+              <span style="font-size:11px;color:#3b82f6;font-weight:600;">Uploading vendor_profile.pdf...</span>
+            </div>
+            <div id="s5-upload-done" style="display:none;align-items:center;gap:7px;">
+              <span style="color:#3b82f6;font-size:14px;">📄</span>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#1e40af;">vendor_profile.pdf</div>
+                <div style="font-size:10px;color:#f97316;font-weight:600;">✦ 3 fields extracted</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom bar: mic + upload + camera -->
+        <div class="s5-bottom-bar">
+          <div class="s5-mic-toast" id="s5-mic-toast" style="display:none;">
+            <div class="s5-wave-bars">
+              <div class="s5-wbar"></div>
+              <div class="s5-wbar"></div>
+              <div class="s5-wbar"></div>
+              <div class="s5-wbar"></div>
+              <div class="s5-wbar"></div>
+            </div>
+            <span id="s5-toast-text">Listening...</span>
+          </div>
+          <div class="s5-input-bar">
+            <button class="s5-mic-btn" id="s5-mic-btn"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
+            <div class="s5-input-spacer"></div>
+            <button class="s5-upload-btn">↑</button>
+            <button class="s5-cam-btn"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="s5-arrow">→</div>
+
+      <!-- Panel 3: Action Review (interactive) -->
+      <div class="s5-panel" id="action-panel">
+        <div class="s5-panel-label">Platform</div>
+        <div class="s5-panel-title">Action Review &amp; Approval</div>
+
+        <div id="action-review">
+          <div class="action-header">
+            <div>
+              <div class="action-tool">Create Vendor</div>
+              <div class="action-func">Tool: create_vendor_api</div>
+            </div>
+            <div class="action-pending">PENDING</div>
+          </div>
+          <div class="action-param-row"><span class="action-param-label">Name</span><span class="action-param-val">GlobalTech</span></div>
+          <div class="action-param-row"><span class="action-param-label">Type</span><span class="action-param-val">Supplier</span></div>
+          <div class="action-param-row"><span class="action-param-label">Region</span><span class="action-param-val">US-West</span></div>
+          <div class="action-checks">
+            <div class="action-check-row"><span class="check-green">✓</span> Auth scope verified</div>
+            <div class="action-check-row"><span class="check-green">✓</span> Budget check passed</div>
+            <div class="action-check-row"><span class="check-green">✓</span> Rate limit OK</div>
+          </div>
+          <div class="action-btns">
+            <button class="btn-reject" onclick="rejectAction()">Reject</button>
+            <button class="btn-approve" onclick="approveAction()">Approve ✓</button>
+          </div>
+          <div class="action-trace">Action logged · Trace ID: fw-2847-gbt</div>
+        </div>
+
+        <div class="action-approved" id="action-approved">
+          <div class="approved-check">✓</div>
+          <div class="approved-title">Vendor Created Successfully</div>
+          <div class="approved-sub">GlobalTech added · ID #VN-2847<br>Category: Manufacturing · Status: Active<br>Payment terms: Net 30</div>
+          <div class="action-trace" style="margin-top:10px;">Logged · Trace ID: fw-2847-gbt · Auditable</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Explorer panel (hidden by default) -->
+  <div class="s6-content" id="ia-data-panel" style="display:none; top:130px;">
+    <div class="s6-body" style="height:100%">
+
+      <!-- Left: query context -->
+      <div class="s6-left">
+        <div class="s6-query-card s6-query-clickable s6-active" onclick="s6QueryClick('Bar','Show Q4 revenue by region',this)">
+          <div class="s6-query-label">Query 1</div>
+          <div class="s6-query-text">"Show Q4 revenue by region"</div>
+          <div class="s6-query-arrow">→ Bar chart generated</div>
+        </div>
+        <div class="s6-query-card s6-query-clickable" onclick="s6QueryClick('Pie','Put it on a pie chart',this)">
+          <div class="s6-query-label">Query 2</div>
+          <div class="s6-query-text">"Put it on a pie chart"</div>
+          <div class="s6-query-arrow">→ Switches visualization</div>
+        </div>
+        <div class="s6-query-card s6-query-clickable" onclick="s6QueryClick('Table','Show me as a table',this)">
+          <div class="s6-query-label">Query 3</div>
+          <div class="s6-query-text">"Show me as a table"</div>
+          <div class="s6-query-arrow">→ Tabular breakdown</div>
+        </div>
+        <div class="s6-component-tag">
+          <div class="s6-comp-eyebrow">Component</div>
+          <div class="s6-comp-name">Fluid Data Explorer</div>
+          <div class="s6-comp-desc">Bounded AI exploration on your datasets. No raw SQL access. Users can't leave the defined data boundary.</div>
+        </div>
+      </div>
+
+      <!-- Right: Interactive Explorer -->
+      <div class="s6-explorer">
+        <div class="de-header">
+          <div class="de-dataset">
+            <div class="de-sparkle">✦</div>
+            <div class="de-dataset-label">Dataset: <strong>Sales Q4 2024</strong></div>
+          </div>
+          <div class="de-live"><div class="de-live-dot"></div>Live</div>
+        </div>
+        <div class="de-query">
+          <div class="de-search-icon">🔍</div>
+          <div class="de-query-text" id="de-query-text">Show Q4 revenue by region</div>
+          <div class="de-ai-tag">✦ AI</div>
+        </div>
+        <div class="de-viz" id="de-viz-container" style="padding-top:4px;"></div>
+        <div class="de-insight">
+          <div class="de-insight-icon">✦</div>
+          <div class="de-insight-text">South region leads at $5.0M (+23% QoQ). APAC underperforming vs. target — consider regional review.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 5 — BUSINESS MODEL ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">05 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="biz-content">
+    <div class="pill" style="margin-bottom:10px;">Business Model</div>
+    <!-- Market numbers strip -->
+    <div class="biz-market-strip">
+      <div class="biz-mkt-item">
+        <div class="biz-mkt-num">$1.3T</div>
+        <div class="biz-mkt-text"><strong>Total AI Economy · 2032</strong>Every app rebuilt with AI needs an interface layer</div>
+      </div>
+      <div class="biz-mkt-divider"></div>
+      <div class="biz-mkt-item">
+        <div class="biz-mkt-num">$25B</div>
+        <div class="biz-mkt-text"><strong>AI Dev Tools &amp; Infrastructure · 2030</strong>Picks &amp; shovels for AI-native apps</div>
+      </div>
+      <div class="biz-mkt-divider"></div>
+      <div class="biz-mkt-item">
+        <div class="biz-mkt-num">$50M</div>
+        <div class="biz-mkt-text"><strong>Initial Beachhead</strong>Series A–C SaaS + AI-native builders</div>
+      </div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-card">
+        <div class="pricing-name">Free</div>
+        <div class="pricing-sub-label">To drive adoption and developer trust</div>
+        <div class="pricing-item">Zero-friction AI components</div>
+        <div class="pricing-item">Basic component configurations</div>
+        <div class="pricing-item">Out-of-the-box AI features</div>
+        <div class="pricing-item">Community support</div>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-name">Premium</div>
+        <div class="pricing-sub-label">Usage-based · scales with your growth</div>
+        <div class="pricing-item">Priced per AI execution — aligns with value</div>
+        <div class="pricing-item">Component fine-tuning configs</div>
+        <div class="pricing-item">Advanced AI features + analytics</div>
+        <div class="pricing-item">Low latency + higher connection limits</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-sub-label">Annual contract · custom deployment</div>
+        <div class="pricing-item">On-premise model availability</div>
+        <div class="pricing-item">SSO / RBAC / Audit logs</div>
+        <div class="pricing-item">SLA + dedicated support</div>
+        <div class="pricing-item">Custom deployment options</div>
+      </div>
+    </div>
+    <div class="biz-footnote"><strong>Additional charges</strong> for advanced AI add-ons (e.g., self-improving components, long-term memory, custom agent configs).</div>
+    <div class="biz-bottom-row">
+      <div class="biz-bottom-item orange">
+        <div class="biz-bottom-icon">🔓</div>
+        <div>
+          <div class="biz-bottom-title">Developer-led growth</div>
+          <div class="biz-bottom-sub">Free drives organic installs.<br>Dev → team trial → company contract.</div>
+        </div>
+      </div>
+      <div class="biz-bottom-item orange" style="border:2px solid #f97316; border-radius:10px; border-top-width:2px;">
+        <div class="biz-bottom-icon">⚡</div>
+        <div>
+          <div class="biz-bottom-title">Usage-based pricing</div>
+          <div class="biz-bottom-sub">Per AI execution — costs align with<br>value delivered. Scales with growth.</div>
+        </div>
+      </div>
+      <div class="biz-bottom-item orange">
+        <div class="biz-bottom-icon">🏢</div>
+        <div>
+          <div class="biz-bottom-title">Enterprise ARR</div>
+          <div class="biz-bottom-sub">Annual contract + usage floor.<br>SSO, RBAC, SLA, on-prem options.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 6 — COMPETITION ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">06 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="comp-content">
+    <div class="pill" style="margin-bottom:14px;">Competition</div>
+    <div class="comp-three">
+      <div class="comp-col">
+        <div class="comp-col-label">Vibe / Low Code</div>
+        <div class="comp-col-title">Lovable, Replit, Bolt...</div>
+        <div class="comp-col-sub">"Fast to prototype, impossible to scale"</div>
+        <div class="x-item">Not built for production UX</div>
+        <div class="x-item">Code quality and ownership issues</div>
+        <div class="x-item">No policy, approvals, or audit</div>
+        <div class="x-item">Can't embed in existing apps</div>
+        <div class="x-item">Breaks at enterprise scale</div>
+      </div>
+      <div class="comp-col center-comp">
+        <div class="comp-center-title">FLUID | web</div>
+        <div class="comp-check">Multi-modal (Voice, Chat, Forms)</div>
+        <div class="comp-check">Production-grade components</div>
+        <div class="comp-check">Specialized agentic UX surfaces</div>
+        <div class="comp-check">Model-agnostic runtime</div>
+        <div class="comp-check">Policy, approvals, audit built in</div>
+        <div class="comp-check">Drop-in React SDK — ship in days</div>
+        <div class="comp-footer">One Platform. Complete Solution.</div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-col-label">Build From Scratch</div>
+        <div class="comp-col-title">Internal AI Platform Teams</div>
+        <div class="comp-col-sub">"Powerful backend, no interface layer"</div>
+        <div class="x-item">Months to build the interface layer</div>
+        <div class="x-item">Hard to maintain at scale</div>
+        <div class="x-item">Platform team becomes bottleneck</div>
+        <div class="x-item">Every new AI feature = new sprint</div>
+        <div class="x-item">No reuse across product surfaces</div>
+        <div class="comp-note">✓ FluidWeb runs <strong>on top of</strong> OpenAI, LangChain &amp; LlamaIndex — not against them</div>
+      </div>
+    </div>
+  </div>
+  <div class="comp-bottom-quote">"We replace the need to build an internal AI interface platform."</div>
+</div>
+
+<!-- ══════════════ SLIDE 7 — GTM ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">07 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="s10v3">
+
+    <!-- Header -->
+    <div>
+      <div class="pill" style="margin-bottom:7px;">Go-To-Market Strategy</div>
+      <div class="s10v3-headline">Be the <span>default answer</span> when developers ask how to add AI for their users.</div>
+      <div class="s10v3-sub">Meet them at the moment they're already building — with zero friction to start.</div>
+    </div>
+
+    <!-- 4 Strategy Pillars -->
+    <div class="s10v3-pillars">
+
+      <div class="s10v3-pillar">
+        <div class="s10v3-pillar-top">
+          <div class="s10v3-pillar-num">1</div>
+          <div class="s10v3-pillar-phase">Category Creation</div>
+        </div>
+        <div class="s10v3-pillar-title">Own "Agentic Interfaces"</div>
+        <div class="s10v3-pillar-desc">Name the category before anyone else. Educate the market on HN, LinkedIn, dev Twitter before they know to look.</div>
+        <div class="s10v3-pillar-meta">
+          <span class="s10v3-pillar-tag">Hacker News</span>
+          <span class="s10v3-pillar-tag">LinkedIn</span>
+          <span class="s10v3-pillar-tag">Dev Twitter</span>
+        </div>
+      </div>
+
+      <div class="s10v3-pillar featured">
+        <div class="s10v3-pillar-top">
+          <div class="s10v3-pillar-num">2</div>
+          <div class="s10v3-pillar-phase">AI Coding Tools · Zero-touch</div>
+        </div>
+        <div class="s10v3-pillar-title">Native in Claude Code &amp; Cursor</div>
+        <div class="s10v3-pillar-desc">Developer asks "how do I add AI for my users?" — FluidWeb appears as the answer via MCP, at moment of highest intent.</div>
+        <div class="s10v3-pillar-cue">↓ See it live</div>
+      </div>
+
+      <div class="s10v3-pillar featured">
+        <div class="s10v3-pillar-top">
+          <div class="s10v3-pillar-num">3</div>
+          <div class="s10v3-pillar-phase">Vibe Coding Platforms</div>
+        </div>
+        <div class="s10v3-pillar-title">Bolt.new Starter Projects</div>
+        <div class="s10v3-pillar-desc">Developer starts a new project on Bolt.new — FluidWeb starters already there, pre-wired with agentic components.</div>
+        <div class="s10v3-pillar-cue">↓ See it live</div>
+      </div>
+
+      <div class="s10v3-pillar">
+        <div class="s10v3-pillar-top">
+          <div class="s10v3-pillar-num">4</div>
+          <div class="s10v3-pillar-phase">Direct Outreach · Parallel</div>
+        </div>
+        <div class="s10v3-pillar-title">Series A–C SaaS Outreach</div>
+        <div class="s10v3-pillar-desc">Teams under AI pressure, no dedicated platform team. Founder-led LinkedIn → call → design partner.</div>
+        <div class="s10v3-pillar-meta">
+          <span class="s10v3-pillar-tag">Sortly</span>
+          <span class="s10v3-pillar-tag">Traveljoy</span>
+          <span class="s10v3-pillar-tag">+pipeline</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Divider -->
+    <div class="s10v3-divider">
+      <div class="s10v3-divider-line"></div>
+      <div class="s10v3-divider-label">Channels ② &amp; ③ — live demos</div>
+      <div class="s10v3-divider-line"></div>
+    </div>
+
+    <!-- Two live demo panels -->
+    <div class="s10v3-panels">
+
+      <!-- Panel: Claude Code MCP -->
+      <div class="s10v3-cc">
+        <div class="s10v3-cc-bar">
+          <div class="s10v3-cc-dot" style="background:#ff5f57;"></div>
+          <div class="s10v3-cc-dot" style="background:#febc2e;"></div>
+          <div class="s10v3-cc-dot" style="background:#28c840;"></div>
+          <div class="s10v3-cc-title">claude code</div>
+          <div class="s10v3-cc-badge">MCP SKILL</div>
+        </div>
+        <div class="s10v3-cc-scenario">
+          <b>Scenario:</b> Developer is building an app in Claude Code and asks how to add AI for their users
+        </div>
+        <div class="s10v3-cc-body">
+          <div class="s10v3-user-msg">
+            <div class="s10v3-user-label">Developer</div>
+            <div class="s10v3-user-text">"Add an AI-powered onboarding form to my app"</div>
+          </div>
+          <div class="s10v3-ai-msg" id="s10AiMsg" style="opacity:0; transition:opacity 0.4s;">
+            <div class="s10v3-ai-label">⚡ Using FluidWeb MCP skill…</div>
+            <div class="s10v3-ai-text">Scaffolding a FluidForm — handles voice, doc uploads &amp; AI validation out of the box.</div>
+            <div class="s10v3-code" id="s10Code"></div>
+          </div>
+          <div class="s10v3-success" id="s10Success">✓ Agentic form ready — no backend to wire up</div>
+        </div>
+        <div class="s10v3-cc-footer">
+          Works in <span>Cursor</span> too — same MCP + Cursor Rules
+        </div>
+      </div>
+
+      <!-- Panel: Bolt.new Starter -->
+      <div class="s10v3-bolt">
+        <div class="s10v3-bolt-bar">
+          <div class="s10v3-bolt-logo">bolt<span>.</span>new</div>
+          <div class="s10v3-bolt-search">Search templates…</div>
+          <div class="s10v3-bolt-tag">STARTERS</div>
+        </div>
+        <div class="s10v3-bolt-scenario">
+          <b>Scenario:</b> Developer starts a new project on Bolt.new — FluidWeb starters appear in the gallery
+        </div>
+        <div class="s10v3-bolt-body">
+          <div class="s10v3-bolt-section-label">FluidWeb Starters — click any to see what's included</div>
+          <div class="s10v3-tpl-grid">
+            <div class="s10v3-tpl active" onclick="s10TplClick('starter',this)">
+              <div class="s10v3-tpl-icon">⚡</div>
+              <div class="s10v3-tpl-info">
+                <div class="s10v3-tpl-name">FluidWeb Starter</div>
+                <div class="s10v3-tpl-desc">Full agentic app — chat, forms &amp; data explorer</div>
+              </div>
+            </div>
+            <div class="s10v3-tpl" onclick="s10TplClick('form',this)">
+              <div class="s10v3-tpl-icon">📋</div>
+              <div class="s10v3-tpl-info">
+                <div class="s10v3-tpl-name">FluidForm Onboarding</div>
+                <div class="s10v3-tpl-desc">AI-powered signup &amp; intake flow</div>
+              </div>
+            </div>
+            <div class="s10v3-tpl" onclick="s10TplClick('chat',this)">
+              <div class="s10v3-tpl-icon">💬</div>
+              <div class="s10v3-tpl-info">
+                <div class="s10v3-tpl-name">FluidChat Support</div>
+                <div class="s10v3-tpl-desc">In-product AI assistant with action controls</div>
+              </div>
+            </div>
+            <div class="s10v3-tpl" onclick="s10TplClick('data',this)">
+              <div class="s10v3-tpl-icon">📊</div>
+              <div class="s10v3-tpl-info">
+                <div class="s10v3-tpl-name">FluidData Dashboard</div>
+                <div class="s10v3-tpl-desc">Natural language data explorer</div>
+              </div>
+            </div>
+          </div>
+          <div class="s10v3-tpl-detail show" id="s10Detail">
+            <div class="s10v3-tpl-detail-title" id="s10DetailTitle">⚡ FluidWeb Starter — what's pre-built for you:</div>
+            <div class="s10v3-tpl-chips" id="s10DetailChips">
+              <span class="s10v3-tpl-chip">FluidForm</span>
+              <span class="s10v3-tpl-chip">FluidChat</span>
+              <span class="s10v3-tpl-chip">FluidDataExplorer</span>
+              <span class="s10v3-tpl-chip">Policy Engine</span>
+              <span class="s10v3-tpl-chip">@fluidweb/react</span>
+            </div>
+            <button class="s10v3-tpl-cta">Open in Bolt.new ↗</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panels -->
+
+    <!-- Timeline -->
+    <div class="s10v3-timeline">
+      <div class="s10v3-tl-step lit">
+        <div class="s10v3-tl-dot"></div>
+        <div>
+          <div class="s10v3-tl-label">Discover</div>
+          <div class="s10v3-tl-sublabel">Claude / Bolt</div>
+        </div>
+      </div>
+      <div class="s10v3-tl-line"></div>
+      <div class="s10v3-tl-step lit">
+        <div class="s10v3-tl-dot"></div>
+        <div>
+          <div class="s10v3-tl-label">npm install</div>
+          <div class="s10v3-tl-sublabel">@fluidweb/react (free)</div>
+        </div>
+      </div>
+      <div class="s10v3-tl-line"></div>
+      <div class="s10v3-tl-step lit">
+        <div class="s10v3-tl-dot"></div>
+        <div>
+          <div class="s10v3-tl-label">Ship in days</div>
+          <div class="s10v3-tl-sublabel">agentic feature live</div>
+        </div>
+      </div>
+      <div class="s10v3-tl-line"></div>
+      <div class="s10v3-tl-step">
+        <div class="s10v3-tl-dot"></div>
+        <div>
+          <div class="s10v3-tl-label">Team adopts</div>
+          <div class="s10v3-tl-sublabel">more components</div>
+        </div>
+      </div>
+      <div class="s10v3-tl-line"></div>
+      <div class="s10v3-tl-step">
+        <div class="s10v3-tl-dot"></div>
+        <div>
+          <div class="s10v3-tl-label">Platform upgrade</div>
+          <div class="s10v3-tl-sublabel">policy · audit · RBAC</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 8 — TRACTION ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">08 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="traction-content">
+    <div class="pill" style="margin-bottom:12px;">Traction</div>
+    <div class="traction-headline">The same gap showing up across scales,<br>industries, and levels of AI-nativeness.</div>
+    <div class="traction-row">
+
+      <div class="traction-card-v2">
+        <div class="traction-v2-top">
+          <div class="traction-v2-icon">📦</div>
+          <div class="traction-v2-status partner">Design Partner</div>
+        </div>
+        <div class="traction-v2-type">Inventory &amp; Supply Chain SaaS</div>
+        <div class="traction-v2-metric">200K+ users</div>
+        <div class="traction-v2-problem">AI backend already live. No interface layer built in-house — and no appetite to spend another sprint on it. Evaluating FluidWeb to ship agentic workflows in weeks, not months.</div>
+        <div class="traction-v2-usecase">Voice-powered inventory queries + vendor onboarding forms</div>
+      </div>
+
+      <div class="traction-card-v2">
+        <div class="traction-v2-top">
+          <div class="traction-v2-icon">💼</div>
+          <div class="traction-v2-status partner">Design Partner</div>
+        </div>
+        <div class="traction-v2-type">HR &amp; Payroll SaaS</div>
+        <div class="traction-v2-metric">Series D</div>
+        <div class="traction-v2-problem">Built their own AI framework. It became the bottleneck — a dedicated platform team spent quarters maintaining infrastructure instead of shipping product features.</div>
+        <div class="traction-v2-usecase">Replacing internal platform with FluidWeb drop-in components</div>
+      </div>
+
+      <div class="traction-card-v2">
+        <div class="traction-v2-top">
+          <div class="traction-v2-icon">🤖</div>
+          <div class="traction-v2-status partner">Design Partner</div>
+        </div>
+        <div class="traction-v2-type">AI-Native Startup</div>
+        <div class="traction-v2-metric">FluidForm live</div>
+        <div class="traction-v2-problem">Needed AI-native data collection without building forms infrastructure from scratch. Plugged in FluidForm — AI extracts fields from uploaded documents automatically.</div>
+        <div class="traction-v2-usecase">Intelligent onboarding + document extraction · First revenue</div>
+      </div>
+
+    </div>
+    <div class="traction-more-v2">+ Active conversations across <strong>finance</strong>, <strong>insurance</strong>, <strong>accounting</strong>, and <strong>travel apps</strong> — all hitting the same interface layer gap</div>
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 9 — TEAM ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">09 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="team-content">
+    <div class="team-card">
+      <div class="team-photo"><img src="nishant.jpg" alt="Nishant Aggarwal" style="object-position:center 5%;"></div>
+      <div class="team-name">Nishant Aggarwal</div>
+      <div class="team-role">Co-Founder &amp; CEO</div>
+      <div class="team-tags">
+        <span class="team-tag">Emigre (YC W22)</span>
+        <span class="team-tag">Perl Street</span>
+        <span class="team-tag">AmEx · SVB</span>
+      </div>
+      <div class="team-bio">
+        2x Founder · YC W22<br>
+        3× products to $1M+ ARR<br>
+        Dartmouth Eng. Management<br>
+        <span style="color:#f97316; font-weight:600;">Product + GTM</span>
+      </div>
+    </div>
+    <div class="team-divider"></div>
+    <div class="team-card">
+      <div class="team-photo"><img src="ricardo.jpg" alt="Ricardo Pacheco" style="object-position:center 8%;"></div>
+      <div class="team-name">Ricardo Pacheco</div>
+      <div class="team-role">Co-Founder &amp; CTO</div>
+      <div class="team-tags">
+        <span class="team-tag">Amazon</span>
+        <span class="team-tag">ThoughtWorks</span>
+      </div>
+      <div class="team-bio">
+        AI infrastructure · Distributed systems<br>
+        Amazon AWS · ThoughtWorks<br>
+        Enterprise-grade AI delivery<br>
+        <span style="color:#f97316; font-weight:600;">Architecture + Engineering</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ SLIDE 10 — VISION ══════════════ -->
+<div class="slide">
+  <div class="logo"><img src="FWLogo.png" alt="FluidWeb"></div>
+  <div class="snum">10 ▪▪▪</div>
+  <div class="rule"></div>
+  <div class="vision-content">
+    <div class="vision-headline">How does this become 100X?</div>
+    <div class="vision-sub">Web SaaS is the beachhead. The same platform expands wherever AI gets deployed.</div>
+    <div class="vision-row">
+      <div class="vision-card active">
+        <div class="vision-card-tag">Now</div>
+        <div class="vision-stage">Stage 1 — Beachhead</div>
+        <div class="vision-card-icon">🌐</div>
+        <div class="vision-card-title">Web SaaS Interface Layer</div>
+        <div class="vision-card-desc">B2B SaaS product teams. React SDK. Where the interface layer gap is most urgent — and teams are most ready to pay to solve it.</div>
+      </div>
+      <div class="vision-card future">
+        <div class="vision-stage">Stage 2 — Expansion</div>
+        <div class="vision-card-icon">📱</div>
+        <div class="vision-card-title">FluidWeb Mobile</div>
+        <div class="vision-card-desc">Same SDK, native components for iOS and Android. Same product teams — same problems, same solution, bigger surface area.</div>
+      </div>
+    </div>
+    <div class="vision-bottom">FluidWeb = the <span>React</span> of the AI-native era.</div>
+  </div>
+</div>
+
+<script>
+// ── SLIDE 5: MultiModal Animation ──
+var s5Timers = [];
+function s5ClearTimers() {
+  s5Timers.forEach(function(t){ clearTimeout(t); clearInterval(t); });
+  s5Timers = [];
+}
+function s5After(ms, fn) { var t = setTimeout(fn, ms); s5Timers.push(t); }
+
+function s5SetProgress(field, state) {
+  var map = { company:'s5p1', category:'s5p2', doc:'s5p3' };
+  var el = document.getElementById(map[field]);
+  if (!el) return;
+  el.className = 's5-prog-item' + (state ? ' ' + state : '');
+}
+function s5SetMicPhase(phase) {
+  var btn = document.getElementById('s5-mic-btn');
+  var toast = document.getElementById('s5-mic-toast');
+  var toastText = document.getElementById('s5-toast-text');
+  if (phase === 'voice') {
+    if(btn) btn.classList.add('recording');
+    if(toast) toast.style.display = 'flex';
+    if(toastText) toastText.textContent = 'Listening...';
+  } else if (phase === 'uploading') {
+    if(btn) btn.classList.remove('recording');
+    if(toast) toast.style.display = 'flex';
+    if(toastText) toastText.textContent = 'Uploading...';
+  } else {
+    if(btn) btn.classList.remove('recording');
+    if(toast) toast.style.display = 'none';
+  }
+}
+function s5TypeField(id, text, onDone) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = '';
+  var i = 0;
+  var t = setInterval(function() {
+    if (i < text.length) { el.textContent = text.substring(0, ++i); }
+    else { clearInterval(t); if(onDone) onDone(); }
+  }, 55);
+  s5Timers.push(t);
+}
+function s5ResetForm() {
+  s5SetMicPhase('idle');
+  var company = document.getElementById('s5-field-company');
+  var category = document.getElementById('s5-field-category');
+  var t1 = document.getElementById('s5-ai-tag1');
+  var t2 = document.getElementById('s5-ai-tag2');
+  var idle = document.getElementById('s5-upload-idle');
+  var prog = document.getElementById('s5-upload-progress');
+  var done = document.getElementById('s5-upload-done');
+  if(company) company.textContent = '';
+  if(category) category.textContent = '';
+  if(t1) t1.style.display = 'none';
+  if(t2) t2.style.display = 'none';
+  if(idle) idle.style.display = 'flex';
+  if(prog) prog.style.display = 'none';
+  if(done) done.style.display = 'none';
+  var ef = document.getElementById('s5-extracted-fields');
+  if(ef) ef.style.display = 'none';
+  var taxid = document.getElementById('s5-field-taxid');
+  var address = document.getElementById('s5-field-address');
+  var terms = document.getElementById('s5-field-terms');
+  if(taxid) taxid.textContent = '';
+  if(address) address.textContent = '';
+  if(terms) terms.textContent = '';
+  var t3=document.getElementById('s5-ai-tag3'), t4=document.getElementById('s5-ai-tag4'), t5=document.getElementById('s5-ai-tag5');
+  if(t3) t3.style.display='none'; if(t4) t4.style.display='none'; if(t5) t5.style.display='none';
+  s5SetProgress('company',''); s5SetProgress('category',''); s5SetProgress('doc','');
+}
+function s5Animate() {
+  s5ClearTimers();
+  s5ResetForm();
+  // Idle 1.2s then voice
+  s5After(1200, function() {
+    s5SetMicPhase('voice');
+    s5SetProgress('company', 'active');
+  });
+  // Type company name at 1.8s
+  s5After(1800, function() {
+    s5TypeField('s5-field-company', 'GlobalTech', function() {
+      s5SetProgress('company', 'done');
+      var t1 = document.getElementById('s5-ai-tag1');
+      if(t1) t1.style.display = 'block';
+    });
+  });
+  // Type category at 3.6s
+  s5After(3600, function() {
+    s5SetProgress('category', 'active');
+    s5TypeField('s5-field-category', 'Manufacturing', function() {
+      s5SetProgress('category', 'done');
+      var t2 = document.getElementById('s5-ai-tag2');
+      if(t2) t2.style.display = 'block';
+    });
+  });
+  // Upload phase at 5.5s
+  s5After(5500, function() {
+    s5SetMicPhase('uploading');
+    s5SetProgress('doc', 'active');
+    var idle = document.getElementById('s5-upload-idle');
+    var prog = document.getElementById('s5-upload-progress');
+    if(idle) idle.style.display = 'none';
+    if(prog) prog.style.display = 'flex';
+  });
+  // Upload done at 7s
+  s5After(7000, function() {
+    s5SetMicPhase('idle');
+    s5SetProgress('doc', 'done');
+    var prog = document.getElementById('s5-upload-progress');
+    var done = document.getElementById('s5-upload-done');
+    if(prog) prog.style.display = 'none';
+    if(done) done.style.display = 'flex';
+    // Show extracted fields container
+    var ef = document.getElementById('s5-extracted-fields');
+    if(ef) ef.style.display = 'block';
+  });
+  // Type extracted field 1: Tax ID at 7.5s
+  s5After(7500, function() {
+    s5TypeField('s5-field-taxid', '47-2891034', function() {
+      var t3 = document.getElementById('s5-ai-tag3');
+      if(t3) t3.style.display = 'block';
+    });
+  });
+  // Type extracted field 2: Address at 8.4s
+  s5After(8400, function() {
+    s5TypeField('s5-field-address', 'Austin, TX 78701', function() {
+      var t4 = document.getElementById('s5-ai-tag4');
+      if(t4) t4.style.display = 'block';
+    });
+  });
+  // Type extracted field 3: Payment Terms at 9.3s
+  s5After(9300, function() {
+    s5TypeField('s5-field-terms', 'Net 30', function() {
+      var t5 = document.getElementById('s5-ai-tag5');
+      if(t5) t5.style.display = 'block';
+    });
+  });
+  // Loop at 13s
+  s5After(13000, function() { s5Animate(); });
+}
+s5Animate();
+
+// ── SLIDE 6: Clickable query cards ──
+function s6QueryClick(type, queryText, card) {
+  document.querySelectorAll('.s6-query-clickable').forEach(function(c){ c.classList.remove('s6-active'); });
+  card.classList.add('s6-active');
+  document.getElementById('de-query-text').textContent = queryText;
+  var tabs = document.querySelectorAll('.de-tab');
+  tabs.forEach(function(b){ b.className = 'de-tab'; });
+  tabs.forEach(function(b){ if(b.textContent === type) b.className = 'de-tab active'; });
+  var container = document.getElementById('de-viz-container');
+  container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:220px;gap:10px;"><div style="width:18px;height:18px;border:2.5px solid #ffe0c4;border-top-color:#f97316;border-radius:50%;animation:spin 0.7s linear infinite;"></div><span style="font-size:13px;color:#bbb;font-weight:500;">Analyzing...</span></div>';
+  setTimeout(function(){ renderViz(type); }, 500);
+}
+
+// ── SLIDE 5: Action approve/reject ──
+function approveAction() {
+  document.getElementById('action-review').style.display = 'none';
+  var el = document.getElementById('action-approved');
+  el.style.display = 'flex';
+}
+function rejectAction() {
+  var header = document.querySelector('.action-header');
+  if (header) {
+    header.style.background = '#7f1d1d';
+    var pending = header.querySelector('.action-pending');
+    if (pending) { pending.textContent = 'REJECTED'; pending.style.background = '#991b1b'; }
+    var btns = document.querySelector('.action-btns');
+    if (btns) btns.style.opacity = '0.4';
+  }
+}
+
+// ── SLIDE 6: Data Explorer chart toggle ──
+var DATA = [
+  { label: 'West',    value: 4.1, pct: 82 },
+  { label: 'East',    value: 3.2, pct: 65 },
+  { label: 'Central', value: 2.4, pct: 48 },
+  { label: 'South',   value: 5.0, pct: 100 },
+  { label: 'APAC',    value: 1.9, pct: 38  }
+];
+var COLORS = ['#ea580c','#f97316','#fb923c','#fdba74','#fde68a'];
+var DARK_COLORS = ['#c2410c','#ea580c','#f97316','#fb923c','#fbbf24'];
+
+var queries = {
+  Bar: 'Show Q4 revenue by region',
+  Line: 'Show Q4 revenue trend by region',
+  Table: 'Show me as a table',
+  Pie: 'Put it on a pie chart'
+};
+
+function switchViz(type, btn) {
+  document.querySelectorAll('.de-tab').forEach(function(b){ b.className = 'de-tab'; });
+  btn.className = 'de-tab active';
+  document.getElementById('de-query-text').textContent = queries[type];
+  renderViz(type);
+}
+
+function renderBar(container) {
+  var html = '<div style="display:flex;align-items:flex-end;gap:10px;height:220px;padding:0 8px 0;">';
+  DATA.forEach(function(bar, i) {
+    var h = Math.round(bar.pct * 1.7);
+    var isTop = bar.label === 'South';
+    html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">';
+    html += '<span style="font-size:11px;font-weight:700;color:#374151;">$' + bar.value + 'M</span>';
+    html += '<div style="flex:1;width:100%;display:flex;align-items:flex-end;">';
+    html += '<div style="width:100%;border-radius:4px 4px 0 0;background:' + (isTop ? '#ea580c' : '#f97316') + ';' + (isTop ? 'opacity:1' : 'opacity:0.75') + ';height:' + bar.pct + '%;">';
+    if (isTop) html += '<div style="position:relative;"><div style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);background:#111;color:white;font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;white-space:nowrap;">Highest ↑</div></div>';
+    html += '</div></div>';
+    html += '<span style="font-size:11px;color:#6b7280;font-weight:600;">' + bar.label + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderLine(container) {
+  var maxVal = 5.0;
+  var pts = DATA.map(function(d, i) {
+    return {
+      x: 20 + i * 15,
+      y: 90 - d.value / maxVal * 70,
+      label: d.label,
+      value: d.value
+    };
+  });
+  var pathD = pts.map(function(p, i){ return (i===0?'M':'L') + ' ' + p.x + ' ' + p.y; }).join(' ');
+  var areaD = pathD + ' L ' + pts[pts.length-1].x + ' 90 L ' + pts[0].x + ' 90 Z';
+  var html = '<svg viewBox="0 0 80 100" style="width:100%;height:225px;">';
+  html += '<defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f97316" stop-opacity="0.25"/><stop offset="100%" stop-color="#f97316" stop-opacity="0"/></linearGradient></defs>';
+  [20,40,60,80].forEach(function(y){ html += '<line x1="15" y1="'+y+'" x2="75" y2="'+y+'" stroke="#e5e7eb" stroke-width="0.3"/>'; });
+  html += '<path d="' + areaD + '" fill="url(#lg)"/>';
+  html += '<path d="' + pathD + '" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>';
+  pts.forEach(function(p){
+    html += '<circle cx="'+p.x+'" cy="'+p.y+'" r="2" fill="#fff" stroke="#f97316" stroke-width="1.2"/>';
+    html += '<text x="'+p.x+'" y="'+(p.y-5)+'" text-anchor="middle" font-size="3.5" font-weight="700" fill="#374151">$'+p.value+'M</text>';
+    html += '<text x="'+p.x+'" y="97" text-anchor="middle" font-size="3.5" font-weight="600" fill="#6b7280">'+p.label+'</text>';
+  });
+  html += '</svg>';
+  container.innerHTML = html;
+}
+
+function renderTable(container) {
+  var html = '<table style="width:100%;border-collapse:collapse;font-size:12px;">';
+  html += '<thead><tr style="border-bottom:1.5px solid #e5e7eb;">';
+  html += '<th style="text-align:left;padding:6px 4px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Region</th>';
+  html += '<th style="text-align:right;padding:6px 4px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Revenue</th>';
+  html += '<th style="text-align:right;padding:6px 4px;font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Share</th>';
+  html += '</tr></thead><tbody>';
+  DATA.forEach(function(d, i){
+    var highlight = d.label === 'South' ? 'background:#fff7ed;' : '';
+    html += '<tr style="border-bottom:1px solid #f3f4f6;' + highlight + '">';
+    html += '<td style="padding:8px 4px;font-weight:600;color:#111827;">' + d.label + '</td>';
+    html += '<td style="padding:8px 4px;text-align:right;font-weight:600;color:#374151;">$' + d.value + 'M</td>';
+    html += '<td style="padding:8px 4px;text-align:right;">';
+    html += '<div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">';
+    html += '<div style="width:60px;height:5px;background:#f3f4f6;border-radius:3px;overflow:hidden;"><div style="height:100%;background:#f97316;border-radius:3px;width:'+d.pct+'%;"></div></div>';
+    html += '<span style="font-size:10px;color:#6b7280;min-width:28px;text-align:right;">' + Math.round(d.value/16.6*100) + '%</span>';
+    html += '</div></td></tr>';
+  });
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+function renderPie(container) {
+  var total = DATA.reduce(function(s,d){ return s+d.value; }, 0);
+  var cumAngle = 0;
+  var paths = '';
+  DATA.forEach(function(d, i){
+    var angle = d.value / total * 360;
+    var startAngle = cumAngle;
+    cumAngle += angle;
+    var startRad = (startAngle - 90) * Math.PI / 180;
+    var endRad = (startAngle + angle - 90) * Math.PI / 180;
+    var largeArc = angle > 180 ? 1 : 0;
+    var x1 = 50 + 40 * Math.cos(startRad);
+    var y1 = 50 + 40 * Math.sin(startRad);
+    var x2 = 50 + 40 * Math.cos(endRad);
+    var y2 = 50 + 40 * Math.sin(endRad);
+    paths += '<path d="M 50 50 L '+x1+' '+y1+' A 40 40 0 '+largeArc+' 1 '+x2+' '+y2+' Z" fill="'+COLORS[i]+'" stroke="#fff" stroke-width="1"/>';
+  });
+  var legend = DATA.map(function(d, i){
+    return '<div style="display:flex;align-items:center;gap:6px;font-size:11px;"><div style="width:10px;height:10px;border-radius:2px;background:'+COLORS[i]+';flex-shrink:0;"></div><span style="color:#374151;font-weight:500;flex:1;">'+d.label+'</span><span style="color:#6b7280;font-weight:600;">$'+d.value+'M</span></div>';
+  }).join('');
+  var html = '<div style="display:flex;align-items:center;gap:16px;height:220px;">';
+  html += '<svg viewBox="0 0 100 100" style="width:140px;height:140px;flex-shrink:0;">';
+  html += paths;
+  html += '<circle cx="50" cy="50" r="22" fill="#fff"/>';
+  html += '<text x="50" y="48" text-anchor="middle" font-size="7" font-weight="800" fill="#111827">$'+total.toFixed(1)+'M</text>';
+  html += '<text x="50" y="57" text-anchor="middle" font-size="4" fill="#6b7280">Total</text>';
+  html += '</svg>';
+  html += '<div style="flex:1;display:flex;flex-direction:column;gap:6px;">' + legend + '</div>';
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderViz(type) {
+  var container = document.getElementById('de-viz-container');
+  if (type === 'Bar') renderBar(container);
+  else if (type === 'Line') renderLine(container);
+  else if (type === 'Table') renderTable(container);
+  else if (type === 'Pie') renderPie(container);
+}
+
+// Init
+renderViz('Bar');
+
+// ── SLIDE 4 — In Action tab switching ──
+function iaSwitch(key, el) {
+  document.querySelectorAll('.ia-tab').forEach(function(t){ t.classList.remove('ia-active'); });
+  el.classList.add('ia-active');
+  if (key === 'form') {
+    document.getElementById('ia-form-panel').style.display = '';
+    document.getElementById('ia-data-panel').style.display = 'none';
+    s5ClearTimers();
+    s5ResetForm();
+    s5Animate();
+  } else {
+    document.getElementById('ia-form-panel').style.display = 'none';
+    document.getElementById('ia-data-panel').style.display = '';
+    s5ClearTimers();
+    renderViz('Bar');
+    document.querySelectorAll('.s6-query-clickable').forEach(function(c){ c.classList.remove('s6-active'); });
+    var first = document.querySelectorAll('.s6-query-clickable')[0];
+    if (first) first.classList.add('s6-active');
+    var qt = document.getElementById('de-query-text');
+    if (qt) qt.textContent = 'Show Q4 revenue by region';
+  }
+}
+
+// ── SLIDE 7 — GTM animations ──
+var s10Timer = null;
+var s10CodeLines = [
+  '<span class="kw">import</span> { <span class="fn">FluidForm</span> } <span class="kw">from</span> <span class="str">\'@fluidweb/react\'</span>',
+  '',
+  '<span class="cm">// Drop in. Schema-first. Done.</span>',
+  '<span class="kw">export default function</span> <span class="fn">Onboarding</span>() {',
+  '  <span class="kw">return</span> <span class="str">&lt;FluidForm</span>',
+  '    schema={onboardingSchema}',
+  '    onSubmit={handleSubmit}',
+  '  <span class="str">/&gt;</span>',
+  '}',
+];
+
+function s10Animate() {
+  var aiMsg = document.getElementById('s10AiMsg');
+  var codeEl = document.getElementById('s10Code');
+  var success = document.getElementById('s10Success');
+  if (!aiMsg || !codeEl || !success) return;
+
+  // Reset state
+  aiMsg.style.opacity = '0';
+  codeEl.innerHTML = '';
+  success.classList.remove('show');
+
+  // Phase 1: AI message fades in after 1.2s
+  s10Timer = setTimeout(function() {
+    aiMsg.style.opacity = '1';
+
+    // Phase 2: type code lines
+    var lineIdx = 0;
+    function typeLine() {
+      if (lineIdx < s10CodeLines.length) {
+        codeEl.innerHTML += (lineIdx > 0 ? '\n' : '') + s10CodeLines[lineIdx];
+        lineIdx++;
+        s10Timer = setTimeout(typeLine, 160);
+      } else {
+        // Phase 3: success badge
+        s10Timer = setTimeout(function() {
+          success.classList.add('show');
+          // Loop
+          s10Timer = setTimeout(s10Animate, 3500);
+        }, 500);
+      }
+    }
+    s10Timer = setTimeout(typeLine, 350);
+  }, 1400);
+}
+
+var s10TplData = {
+  starter: {
+    title: '⚡ FluidWeb Starter — Includes:',
+    chips: ['FluidForm', 'FluidChat', 'FluidDataExplorer', 'Policy Engine', '@fluidweb/react'],
+  },
+  form: {
+    title: '📋 FluidForm Onboarding — Includes:',
+    chips: ['FluidForm', 'Multi-modal inputs', 'AI validation', 'Schema-first output', '@fluidweb/react'],
+  },
+  chat: {
+    title: '💬 FluidChat Support — Includes:',
+    chips: ['FluidChat', 'Action controls', 'HITL approval', 'Audit log', '@fluidweb/react'],
+  },
+  data: {
+    title: '📊 FluidData Dashboard — Includes:',
+    chips: ['FluidDataExplorer', 'NL queries', 'Charts & tables', 'Live data', '@fluidweb/react'],
+  },
+};
+
+function s10TplClick(key, el) {
+  document.querySelectorAll('.s10v3-tpl').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+  var data = s10TplData[key];
+  document.getElementById('s10DetailTitle').textContent = data.title;
+  document.getElementById('s10DetailChips').innerHTML = data.chips
+    .map(function(c) { return '<span class="s10v3-tpl-chip">' + c + '</span>'; }).join('');
+  document.getElementById('s10Detail').classList.add('show');
+}
+
+s10Animate();
+</script>
+</body>
+</html>
