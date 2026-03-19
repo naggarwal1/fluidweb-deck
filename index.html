@@ -872,11 +872,12 @@ body {
   top:82px; left:56px; right:56px; bottom:24px;
 }
 .traction-headline {
-  font-size:28px; font-weight:800;
-  color:#2a2a2a; margin-bottom:18px;
+  font-size:22px; font-weight:800;
+  color:#2a2a2a; margin-bottom:12px;
   line-height:1.2;
 }
-.traction-row { display:flex; gap:14px; }
+.traction-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.traction-v2-status.revenue { background:#dcfce7; color:#16a34a; }
 .traction-card {
   flex:1; background:white;
   border-radius:14px; padding:22px;
@@ -2298,9 +2299,23 @@ body {
           <div class="traction-v2-status partner">Design Partner</div>
         </div>
         <div class="traction-v2-type">AI-Native Startup</div>
-        <div class="traction-v2-metric">FluidForm live</div>
+        <div class="traction-v2-metric">AI Loan Officer</div>
         <div class="traction-v2-problem">Needed AI-native data collection without building forms infrastructure from scratch. Plugged in FluidForm — AI extracts fields from uploaded documents automatically.</div>
-        <div class="traction-v2-usecase">Intelligent onboarding + document extraction · First revenue</div>
+        <div class="traction-v2-usecase">Intelligent onboarding + document extraction</div>
+      </div>
+
+      <div class="traction-card-v2">
+        <div class="traction-v2-top">
+          <div class="traction-v2-icon">🎯</div>
+          <div style="display:flex; gap:6px;">
+            <div class="traction-v2-status partner">Design Partner</div>
+            <div class="traction-v2-status revenue">First Revenue</div>
+          </div>
+        </div>
+        <div class="traction-v2-type">AI Evaluation Platform</div>
+        <div class="traction-v2-metric">Expert Evals</div>
+        <div class="traction-v2-problem">Expert evaluators need to score AI outputs across complex rubrics — written justifications, voice responses, multi-modal inputs. Building structured capture from scratch was blocking their feedback loop. FluidForm handles eval form generation from rubric criteria and voice response capture automatically.</div>
+        <div class="traction-v2-usecase">Dynamic eval forms for expert reviewers · voice response capture</div>
       </div>
 
     </div>
